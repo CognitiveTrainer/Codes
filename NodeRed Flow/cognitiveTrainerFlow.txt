@@ -1,0 +1,2411 @@
+[
+    {
+        "id": "de6d9106.9ce4e",
+        "type": "tab",
+        "label": "WEB",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "a71dae43.615d4",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/registro_usuario",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 260,
+        "wires": [
+            [
+                "393b9abb.05caa6"
+            ]
+        ]
+    },
+    {
+        "id": "3ef9c752.5c4498",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/submitUsuario",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 460,
+        "wires": [
+            [
+                "8970a768.2aa008"
+            ]
+        ]
+    },
+    {
+        "id": "393b9abb.05caa6",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "msg.url = \"submitUsuario\";",
+        "func": "msg.url = \"submitUsuario\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 440,
+        "y": 260,
+        "wires": [
+            [
+                "1fcada88.57d445"
+            ]
+        ]
+    },
+    {
+        "id": "fa3f13fd.35984",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1130,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "55265edb.b7cce",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "CSS",
+        "field": "payload.style",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "input[type=text], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=submit] {\n    width: 100%;\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\ninput[type=submit]:hover {\n    background-color: #45a049;\n}\n\n#formulario {\n    margin: 0 5%;\n    border-radius: 5px;\n    background-color: #f2f2f2;\n    padding: 20px;\n    width: 90%;\n}",
+        "x": 650,
+        "y": 360,
+        "wires": [
+            [
+                "f36aa84b.8d70a8"
+            ]
+        ]
+    },
+    {
+        "id": "1fcada88.57d445",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "JavaScript",
+        "field": "payload.script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "plain",
+        "template": "$(document).ready(function(e) {\n    \n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        var form_url = $(this).attr(\"action\");\n        var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: form_url, \n            type: form_method,      \n            data: form_data,     \n            cache: false,\n            success: function(returnhtml){                          \n                $(\"#result\").html(returnhtml); \n                $(\"#loadingimg\").hide();                    \n            }           \n        });    \n        \n    });\n    \n});\n\nfunction tipoDeportista() {\n    tipo = document.getElementById(\"tipo\").value;\n    \n    if(tipo===\"tipoDep\"){\n        document.getElementById(\"datosDeportista\").style.display = 'block';\n    } else {\n        document.getElementById(\"datosDeportista\").style.display = 'none';\n    }\n}\n",
+        "x": 490,
+        "y": 360,
+        "wires": [
+            [
+                "55265edb.b7cce"
+            ]
+        ]
+    },
+    {
+        "id": "4981bef6.15837",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 930,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "f36aa84b.8d70a8",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Registro de usuario</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n        \n        <!-- Latest compiled and minified CSS -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n        \n        <!-- Optional theme -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n\n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n        \n        <!--script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js\"></script-->\n        <style>{{{payload.style}}}</style>\n    </head>\n    \n    <body> \n\t\t<header>\n\t\t\t<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<div class=\"navbar-header\">\n\t\t\t\t\t  <a class=\"navbar-brand\" href=\"/home\">Cognitive Trainer</a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<ul class=\"nav navbar-nav\">\n\t\t\t\t\t  <li class=\"active\"><a href=\"/home\">Home</a></li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Usuarios\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/registro_usuario\">Registro</a></li>\n\t\t\t\t\t\t  <li><a href=\"/ver_usuario\">Ver</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Entrenamiento\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/comienzo_entrenamiento\">Comenzar</a></li>\n\t\t\t\t\t\t  <li><a href=\"/historial_entrenamiento\">Historial</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li><a href=\"/estadisticas\">Estadisticas</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t\t<ul class=\"nav navbar-nav navbar-right\">\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Registro</a></li>\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t</nav>\n        </header>\n\t\t\n\t\t<div class=\"container\">\n\t\t\t<div class=\"jumbotron\">\n\t\t\t\t<h2>Registro de nuevo usuario</h2>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div id=\"formulario\">\n\t\t\t    <form method=\"post\" action=\"/{{url}}\" ajax=\"true\">\n                    <label for=\"id\">ID</label>\n                \t<input type=\"text\" id=\"id\" name=\"id\">\n                    \n                    <label for=\"fname\">Nombre</label>\n                    <input type=\"text\" id=\"fname\" name=\"firstname\">\n                \n                    <label for=\"lname\">Apellido</label>\n                    <input type=\"text\" id=\"lname\" name=\"lastname\">\n                \t\n                    <label for=\"email\">Email</label>\n                    <input type=\"text\" id=\"email\" name=\"email\">\n                \t\n                    <label for=\"tel\">Telefono</label>\n                    <input type=\"text\" id=\"tel\" name=\"tel\">\n                \t\n\t\t\t\t\t<label for=\"fechanac\">Fecha de nacimiento</label>\n                    <input type=\"date\" id=\"fechanac\" name=\"fechanac\" class=\"form-control\" >\n                \t\n                    <label for=\"tipo\">Tipo</label>\n                    <select id=\"tipo\" name=\"tipo\" onChange=\"tipoDeportista();\">\n                        <option value=\"tipoDep\">Deportista</option>\n                        <option value=\"tipoEnt\">Entrenador</option>\n                    </select>\n                \t\n                    <div id=\"datosDeportista\">\n                \t\t<label for=\"altura\">Altura</label>\n                \t\t<input type=\"text\" id=\"altura\" name=\"altura\">\n                \t\t\n                \t\t<label for=\"peso\">Peso</label>\n                \t\t<input type=\"text\" id=\"peso\" name=\"peso\">\n                \t\t\n                \t\t<label for=\"tipoDeDeportista\">Tipo de deportista</label>\n                \t\t<select id=\"tipoDeDeportista\" name=\"tipoDeDeportista\">\n                        <option value=\"amateur\">Amateur</option>\n                        <option value=\"semiprof\">Semi-Profesional</option>\n                        <option value=\"prof\">Profesional</option>\n                        </select>\n                \t</div>\n                \t\n                \t<label for=\"rfid\">RFID</label>\n                \t<input type=\"text\" id=\"rfid\" name=\"rfid\">\n                  \n                \t<input type=\"submit\" value=\"Submit\">\n                </form>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div>\n\t\t\t\t<span id=\"result\"></span>\n\t\t\t</div>\n\t\t</div>\n\t\t\n        \n        \n    \n    </body>\n</html>\n\n<script>{{{payload.script}}}</script>",
+        "x": 790,
+        "y": 360,
+        "wires": [
+            [
+                "4981bef6.15837"
+            ]
+        ]
+    },
+    {
+        "id": "7698a0a5.89db9",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Login Form",
+        "info": "",
+        "x": 370,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "271e7acb.e88f56",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Inject msg object properties",
+        "info": "",
+        "x": 360,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "efce417e.b3479",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Registro Usuario",
+        "info": "",
+        "x": 160,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "776ea754.13f568",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Submit usuario",
+        "info": "",
+        "x": 160,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "6ac6f9bf.c192b8",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Cognitive Trainer Site",
+        "info": "This Flow demonstrates how to create\na simple frontend webpage with Node-RED.\n\nThe public facing page consists of the \nclient side JavaScript, CSS and HTML. \n\nThe important technique is how the mustache \ntemplates are used. Each template will set the\n\"property\" relative to the content. \n\nThe CSS node sets the \"msg.payload.style\" property.\nThe JavaScript node sets the \"msg.payload.script\" property.\nThe HTML node then includes these properties \n<script>{{{payload.script}}}</script>\n<style>{{{payload.style}}}</style>\n\n\nThis example was created by http://www.InternetofLEGO.com\n\n",
+        "x": 640,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "a01d5f29.83b1",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var id = global.get(\"id\"); \nvar name = global.get(\"fname\");\nvar surname = global.get(\"lname\");\nvar tel = global.get(\"tel\");\nvar mail = global.get(\"mail\");\nvar fechanac = global.get(\"fechanac\");\nvar rfid = global.get(\"rfid\");\n\n\n\nif(msg.payload.length > 0){\n    msg.payload = \"exists\";\n}\nelse {\n    var sql = \"insert into usuarios values (\" + id + \",'\" + name + \"','\" + surname + \"','\" + mail + \"',\" + tel + \",'\" + fechanac + \"','\" + rfid + \"')\";\n    msg.payload = sql;    \n\n    msg.topic=msg.payload;\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 650,
+        "y": 460,
+        "wires": [
+            [
+                "95f6aed3.cfafb"
+            ]
+        ]
+    },
+    {
+        "id": "8970a768.2aa008",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var id = msg.payload.id \n\nglobal.set(\"id\",msg.payload.id); \nglobal.set(\"fname\",msg.payload.firstname); \nglobal.set(\"lname\",msg.payload.lastname); \nglobal.set(\"tel\",msg.payload.tel);\nglobal.set(\"mail\",msg.payload.email); \nglobal.set(\"fechanac\",msg.payload.fechanac); \nglobal.set(\"tipo\",msg.payload.tipo); \nglobal.set(\"altura\",msg.payload.altura); \nglobal.set(\"peso\",msg.payload.peso); \nglobal.set(\"tipoDeDeportista\",msg.payload.tipoDeDeportista); \nglobal.set(\"rfid\",msg.payload.rfid); \n\nvar sql = \"select * from usuarios where UsuarioID=\" + id;\n\nmsg.payload = sql;\n\nmsg.topic=msg.payload;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 370,
+        "y": 460,
+        "wires": [
+            [
+                "3b2421ba.fb266e"
+            ]
+        ]
+    },
+    {
+        "id": "95f6aed3.cfafb",
+        "type": "switch",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "exists",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 370,
+        "y": 540,
+        "wires": [
+            [
+                "4bdd8d78.9287e4"
+            ],
+            [
+                "4e205244.3cf01c"
+            ]
+        ]
+    },
+    {
+        "id": "4bdd8d78.9287e4",
+        "type": "change",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "El usuario ya existe",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 520,
+        "wires": [
+            [
+                "fa3f13fd.35984"
+            ]
+        ]
+    },
+    {
+        "id": "2f62b4e8.470e3c",
+        "type": "change",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "El registro fue exitoso",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 960,
+        "y": 560,
+        "wires": [
+            [
+                "fa3f13fd.35984"
+            ]
+        ]
+    },
+    {
+        "id": "21150bd6.4aa9b4",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/home",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 120,
+        "wires": [
+            [
+                "86bae369.d3f87"
+            ]
+        ]
+    },
+    {
+        "id": "f711e9fa.36e798",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 750,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "86bae369.d3f87",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "JavaScript",
+        "field": "payload.script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "plain",
+        "template": "$(document).ready(function(e) {\n    \n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        var form_url = $(this).attr(\"action\");\n        var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: form_url, \n            type: form_method,      \n            data: form_data,     \n            cache: false,\n            success: function(returnhtml){                          \n                $(\"#result\").html(returnhtml); \n                $(\"#loadingimg\").hide();                    \n            }           \n        });    \n        \n    });\n    \n});\n\nfunction goHome() {\n  location.href = 'https://testingcognitivetrainer.mybluemix.net/home';\n}\n\nfunction registerUser() {\n  location.href = 'https://testingcognitivetrainer.mybluemix.net/registro_usuario';\n}\n\nfunction viewUser() {\n  location.href = 'https://testingcognitivetrainer.mybluemix.net/ver_usuario';\n}",
+        "x": 310,
+        "y": 120,
+        "wires": [
+            [
+                "abe89655.a186f8"
+            ]
+        ]
+    },
+    {
+        "id": "2a2b08f7.2d8078",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Registro de usuario</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n        <!-- Latest compiled and minified CSS -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n        \n        <!-- Optional theme -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n\n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n        \n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js\"></script>\n        <style>{{{payload.style}}}</style>\n    </head>\n    \n    <body>  \n\t\t<header>\n\t\t\t<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<div class=\"navbar-header\">\n\t\t\t\t\t  <a class=\"navbar-brand\" href=\"/home\">Cognitive Trainer</a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<ul class=\"nav navbar-nav\">\n\t\t\t\t\t  <li class=\"active\"><a href=\"/home\">Home</a></li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Usuarios\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/registro_usuario\">Registro</a></li>\n\t\t\t\t\t\t  <li><a href=\"/ver_usuario\">Ver</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Entrenamiento\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/comienzo_entrenamiento\">Comenzar</a></li>\n\t\t\t\t\t\t  <li><a href=\"/historial_entrenamiento\">Historial</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li><a href=\"/estadisticas\">Estadisticas</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t\t<ul class=\"nav navbar-nav navbar-right\">\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Registro</a></li>\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t</nav>\n        </header>\n        \n        <div class=\"container\">\n            <div class=\"jumbotron\">\n                <h2>Ver usuarios</h2>\n            </div>\n            \n            <p id=\"deportistas\"></p>\n        </div>\n        <div>\n            <span id=\"result\"></span>\n        </div>\n    \n    </body>\n</html>\n\n<script>\n    {{{payload.script}}}\n    \n    var html = '<table class=\"table table-striped\"><div class=\"table responsive\">';\n\thtml +=\"<thead><tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>Teléfono</th><th>Email</th><th>Fecha de Nacimiento</th><th>RFID</th></tr></thead>\";\n    var arrayPayload = {{{payload}}};\n    \n\tif(arrayPayload.length > 0){\n        for (i = 0; i < arrayPayload.length; i++) {\n    \t\thtml += \"<tr>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].UsuarioID + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].pnom + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].pape + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].tel + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].email + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].fechanac + \"</td>\";\n    \t\tif(arrayPayload[i].rfid !== \"\"){ html += \"<td>\" + arrayPayload[i].rfid + \"</td>\"; } \n    \t\telse{ html += \"<td>No tiene asignado </td>\";}\n    \t\thtml += \"</tr>\";\n        }\n\t}\n\telse{\t\n\t\thtml += \"<tr><td colspan='7'>No hay usuarios ingresados<td></tr>\";\n\t}\n    html +=\"</div></table>\";\n    document.getElementById(\"deportistas\").innerHTML = html;\n</script>",
+        "x": 1070,
+        "y": 700,
+        "wires": [
+            [
+                "8d288597.a29128"
+            ]
+        ]
+    },
+    {
+        "id": "8d1ab5a2.b647d8",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "JavaScript",
+        "field": "payload.script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "plain",
+        "template": "$(document).ready(function(e) {\n    \n    document.getElementById(\"deportistas\").innerHTML = msg.payload;\n\n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        var form_url = $(this).attr(\"action\");\n        var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: form_url, \n            type: form_method,      \n            data: form_data,     \n            cache: false,\n            success: function(returnhtml){                          \n                $(\"#result\").html(returnhtml); \n                $(\"#loadingimg\").hide();                    \n            }           \n        });    \n        \n    });\n    \n});\n\nfunction goHome() {\n  location.href = 'https://testingcognitivetrainer.mybluemix.net/home';\n}\n\nfunction registerUser() {\n  location.href = 'https://testingcognitivetrainer.mybluemix.net/registro_usuario';\n}\n\nfunction viewUser() {\n  location.href = 'https://testingcognitivetrainer.mybluemix.net/ver_usuario';\n}",
+        "x": 770,
+        "y": 700,
+        "wires": [
+            [
+                "7cad0596.fffd7c"
+            ]
+        ]
+    },
+    {
+        "id": "7cad0596.fffd7c",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "CSS",
+        "field": "payload.style",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "input[type=text], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=submit] {\n    width: 100%;\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\ninput[type=submit]:hover {\n    background-color: #45a049;\n}\n\ndiv {\n    border-radius: 5px;\n    background-color: #f2f2f2;\n    padding: 20px;\n}",
+        "x": 930,
+        "y": 700,
+        "wires": [
+            [
+                "2a2b08f7.2d8078"
+            ]
+        ]
+    },
+    {
+        "id": "3ad2cb74.87bde4",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/ver_usuario",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 700,
+        "wires": [
+            [
+                "c2469b12.299d38"
+            ]
+        ]
+    },
+    {
+        "id": "8d288597.a29128",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1210,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "c2469b12.299d38",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "msg.payload=\"select * from usuarios\";\nmsg.topic = msg.payload; \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 330,
+        "y": 700,
+        "wires": [
+            [
+                "47514ccb.aef2e4"
+            ]
+        ]
+    },
+    {
+        "id": "21e78530.02732a",
+        "type": "json",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 610,
+        "y": 700,
+        "wires": [
+            [
+                "8d1ab5a2.b647d8"
+            ]
+        ]
+    },
+    {
+        "id": "f6bf5d37.92808",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Ver Usuarios",
+        "info": "",
+        "x": 150,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "6b969671.2f3b58",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Home",
+        "info": "",
+        "x": 130,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "cb97b4ba.7df838",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Inicio</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n\n        <!-- Latest compiled and minified CSS -->\n        <!--<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">-->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">\n\t\t\n        <!-- Optional theme -->\n        <!--<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">-->\n\n\t\t<!-- Bootstrap 3 -->\n        <!--\n\t\t<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n        \n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        -->\n\t\t\n\t\t<!-- Bootstrap 4 -->\n\t\t<script src=\"https://code.jquery.com/jquery-3.2.1.slim.min.js\" integrity=\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\" crossorigin=\"anonymous\"></script>\n\t\t<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js\" integrity=\"sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q\" crossorigin=\"anonymous\"></script>\n\t\t<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js\" integrity=\"sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></script>\n\n        {{{payload.style}}}\n        \n        <style>\n            \n            \n            .vcenter {\n                display: inline-block;\n                vertical-align: middle;\n                float: none;\n\t\t\t\tmargin-bottom: auto !important;\n\t\t\t\tmargin-top: auto !important;\n            }\n        \n            .carousel-inner>.item>a>img, .carousel-inner>.item>img  {\n              margin: 0 auto !important;\n            }\n            \n            .carousel-inner>.item {\n              max-height:483px;\n            }\n            \n            \n            .carousel .slide{ \n                max-height: 483px;\n            }\n\t\t\t\n\t\t\t.container {\n\t\t\t\tmargin-top: 40px;\n\t\t\t}\n\t\t\t\n\t\t\t.masthead {\n\t\t\t  padding-top: 10rem;\n\t\t\t  padding-bottom: calc(10rem - 56px);\n\t\t\t  background-image: url(\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/jump-nike.jpg\");\n\t\t\t  background-position: center center;\n\t\t\t  -webkit-background-size: cover;\n\t\t\t  -moz-background-size: cover;\n\t\t\t  -o-background-size: cover;\n\t\t\t  background-size: cover;\n\t\t\t}\n\n\t\t\t.masthead hr {\n\t\t\t  margin-top: 30px;\n\t\t\t  margin-bottom: 30px;\n\t\t\t}\n\n\t\t\t.masthead h1 {\n\t\t\t  font-size: 2rem;\n\t\t\t}\n\n\t\t\t.masthead p {\n\t\t\t  font-weight: 300;\n\t\t\t}\n\n\t\t\t@media (min-width: 768px) {\n\t\t\t  .masthead p {\n\t\t\t\tfont-size: 1.15rem;\n\t\t\t  }\n\t\t\t}\n\n\t\t\t@media (min-width: 992px) {\n\t\t\t  .masthead {\n\t\t\t\theight: 100vh;\n\t\t\t\tmin-height: 650px;\n\t\t\t\tpadding-top: 20px;\n\t\t\t\tpadding-bottom: 20px;\n\t\t\t  }\n\t\t\t  .masthead h1 {\n\t\t\t\tfont-size: 3rem;\n\t\t\t  }\n\t\t\t}\n\n\t\t\t@media (min-width: 1200px) {\n\t\t\t  .masthead h1 {\n\t\t\t\tfont-size: 4rem;\n\t\t\t  }\n\t\t\t}\n\t\t\t\n        </style>\n        \n    </head>\n    \n    <body>  \n\t\t<header>\n\t\t\t<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n\t\t\t\t<a class=\"navbar-brand\" href=\"/home\">Cognitive Trainer</a>\n\t\t\t\t<button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n\t\t\t\t<span class=\"navbar-toggler-icon\"></span>\n\t\t\t\t</button>\n                \n\t\t\t\t<div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n\t\t\t\t<ul class=\"navbar-nav mr-auto\">\n\t\t\t\t  <li class=\"nav-item active\">\n\t\t\t\t\t<a class=\"nav-link\" href=\"/home\">Home <span class=\"sr-only\">(current)</span></a>\n\t\t\t\t  </li>\n\t\t\t\t  <li class=\"nav-item dropdown\">\n\t\t\t\t\t<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n\t\t\t\t\t  Usuarios\n\t\t\t\t\t</a>\n\t\t\t\t\t<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">\n\t\t\t\t\t  <a class=\"dropdown-item\" href=\"#\">Registro</a>\n\t\t\t\t\t  <a class=\"dropdown-item\" href=\"#\">Ver</a>\n\t\t\t\t\t</div>\n\t\t\t\t  </li>\n\t\t\t\t  <li class=\"nav-item dropdown\">\n\t\t\t\t\t<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdown\" role=\"button\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n\t\t\t\t\t  Entrenamiento\n\t\t\t\t\t</a>\n\t\t\t\t\t<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdown\">\n\t\t\t\t\t  <a class=\"dropdown-item\" href=\"#\">Comenzar</a>\n\t\t\t\t\t  <a class=\"dropdown-item\" href=\"#\">Historial</a>\n\t\t\t\t\t</div>\n\t\t\t\t  </li>\n\t\t\t\t  <li class=\"nav-item\">\n\t\t\t\t\t<a class=\"nav-link\" href=\"/home\">Estadisticas</a>\n\t\t\t\t  </li>\n\t\t\t\t</ul>\n\t\t\t\t<form class=\"form-inline my-2 my-lg-0\">\n\t\t\t\t  <input class=\"form-control mr-sm-2\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\">\n\t\t\t\t  <button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\">Search</button>\n\t\t\t\t</form>\n\t\t\t\t</div>\n\t\t\t\t</nav>\n        </header>\n        \n        <!-- Prueba bootstrap-->\n        \n\t\t<div class=\"masthead text-center d-flex\"  style=\"color: white;\">\n\t\t\t<div class=\"container vcenter\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t  <div class=\"col-lg-10 mx-auto\">\n\t\t\t\t\t<h1 class=\"text-uppercase\">\n\t\t\t\t\t  <strong>Bienvenido a Cognitive Trainer</strong>\n\t\t\t\t\t</h1>\n\t\t\t\t\t<hr>\n\t\t\t\t  </div>\n\t\t\t\t  <div class=\"col-lg-8 mx-auto\">\n\t\t\t\t\t<p class=\"text-faded text-white mb-5\">Puedes comenzar a mejorar el rendimiento de tus deportistas cuando lo desees. Puede saber más sobre este proyecto a continuación.</p>\n\t\t\t\t\t<a class=\"btn btn-primary btn-xl js-scroll-trigger\" href=\"#about\">El proyecto</a>\n\t\t\t\t  </div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t\t<div class=\"container\">\n\t\t\t<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">\n\t\t\t\t<!-- Indicators -->\n\t\t\t\t<ol class=\"carousel-indicators\">\n\t\t\t\t\t<li data-target=\"#myCarousel\" data-slide-to=\"0\" class=\"active\"></li>\n\t\t\t\t\t<li data-target=\"#myCarousel\" data-slide-to=\"1\"></li>\n\t\t\t\t\t<li data-target=\"#myCarousel\" data-slide-to=\"2\"></li>\n\t\t\t\t</ol>\n\n\t\t\t\t<!-- Wrapper for slides -->\n\t\t\t\t<div class=\"carousel-inner\">\n\t\t\t\t\t<div class=\"item active\">\n\t\t\t\t\t  <img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/maqueta_todas_white.png\" class=\"img-fluid\" alt=\"Maquetas de dispositivos\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"item\">\n\t\t\t\t\t  <img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2014/08/circuito.png\" class=\"img-fluid\" alt=\"Circuito electrónico\">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class=\"item\">\n\t\t\t\t\t  <img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/06/plataformas.png\" class=\"img-fluid\" alt=\"Plataformas utilizadas\">\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<!-- Left and right controls -->\n\t\t\t\t<a class=\"left carousel-control\" href=\"#myCarousel\" data-slide=\"prev\">\n\t\t\t\t\t<span class=\"glyphicon glyphicon-chevron-left\"></span>\n\t\t\t\t\t<span class=\"sr-only\">Previous</span>\n\t\t\t\t</a>\n\t\t\t\t<a class=\"right carousel-control\" href=\"#myCarousel\" data-slide=\"next\">\n\t\t\t\t\t<span class=\"glyphicon glyphicon-chevron-right\"></span>\n\t\t\t\t\t<span class=\"sr-only\">Next</span>\n\t\t\t\t</a>\n\t\t\t</div>\n\t\t\t\n            <h3>Cognitive Trainer es una solución para mejorar las capacidades físicas y cognitivas de los deportistas. Consiste en un sistema de entrenamiento específico para aumentar la capacidad de procesamiento de la información de los deportistas, en el mismo se utilizan 2 módulos de entrenamiento y un sistema en linea para la selección del entrenamiento deseado y el procesamiento de la información del entrenamiento realizado.</h3>\n\t\t    <h3>Cognitive Trainer es una solución para mejorar las capacidades físicas y cognitivas de los deportistas. Consiste en un sistema de entrenamiento específico para aumentar la capacidad de procesamiento de la información de los deportistas, en el mismo se utilizan 2 módulos de entrenamiento y un sistema en linea para la selección del entrenamiento deseado y el procesamiento de la información del entrenamiento realizado.</h3>\n\t\t    <h3>Cognitive Trainer es una solución para mejorar las capacidades físicas y cognitivas de los deportistas. Consiste en un sistema de entrenamiento específico para aumentar la capacidad de procesamiento de la información de los deportistas, en el mismo se utilizan 2 módulos de entrenamiento y un sistema en linea para la selección del entrenamiento deseado y el procesamiento de la información del entrenamiento realizado.</h3>\n\t\t\n        </div>    \n    </body>\n</html>\n\n<script>{{{payload.script}}}</script>",
+        "x": 610,
+        "y": 120,
+        "wires": [
+            [
+                "f711e9fa.36e798"
+            ]
+        ]
+    },
+    {
+        "id": "7421cd0.09d4e34",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var id = global.get(\"id\"); \nvar tipo = global.get(\"tipo\"); \nvar alt = global.get(\"altura\"); \nvar peso = global.get(\"peso\"); \nvar tipoDep = global.get(\"tipoDeDeportista\"); \n\nif(tipo===\"tipoDep\"){\n    var sql = \"insert into deportista values (\" + id + \",'\" + peso + \"','\" + alt + \"','\" + tipoDep + \"')\";\n    msg.payload = sql;    \n}else{\n    var sql = \"insert into entrenador values (\" + id + \");\";\n    msg.payload = sql;\n}\n\nmsg.topic=msg.payload;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 650,
+        "y": 560,
+        "wires": [
+            [
+                "ed33a7cd.4c9088"
+            ]
+        ]
+    },
+    {
+        "id": "89bed792.40c3b8",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/registro_entrenamiento",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 860,
+        "wires": [
+            [
+                "b9e97331.e3d4c"
+            ]
+        ]
+    },
+    {
+        "id": "a0bb01ca.7c91e",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/submitEntrenamiento",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 1060,
+        "wires": [
+            [
+                "bf8fb62f.0e5dd8"
+            ]
+        ]
+    },
+    {
+        "id": "b9e97331.e3d4c",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "msg.url = \"/submitEntrenamiento\";",
+        "func": "msg.url = \"/submitEntrenamiento\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 500,
+        "y": 860,
+        "wires": [
+            [
+                "1b7ec023.3482"
+            ]
+        ]
+    },
+    {
+        "id": "f3a1cc47.e7ec8",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "x": 1190,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "1af8a5f.f01915a",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "CSS",
+        "field": "payload.style",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "input[type=text], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=submit] {\n    width: 100%;\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\ninput[type=submit]:hover {\n    background-color: #45a049;\n}\n\n#formulario {\n    margin: 0 5%;\n    border-radius: 5px;\n    background-color: #f2f2f2;\n    padding: 20px;\n    width: 90%;\n}",
+        "x": 690,
+        "y": 940,
+        "wires": [
+            [
+                "e71a0906.a266a8"
+            ]
+        ]
+    },
+    {
+        "id": "1b7ec023.3482",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "JavaScript",
+        "field": "payload.script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "plain",
+        "template": "$(document).ready(function(e) {\n    \n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        var form_url = $(this).attr(\"action\");\n        var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: form_url, \n            type: form_method,      \n            data: form_data,     \n            cache: false,\n            success: function(returnhtml){                          \n                $(\"#result\").html(returnhtml); \n                $(\"#loadingimg\").hide();                    \n            }           \n        });    \n        \n    });\n    \n});\n\nfunction tipoDeportista() {\n    tipo = document.getElementById(\"tipo\").value;\n    \n    if(tipo===\"tipoDep\"){\n        document.getElementById(\"datosDeportista\").style.display = 'block';\n    } else {\n        document.getElementById(\"datosDeportista\").style.display = 'none';\n    }\n  \n}\n",
+        "x": 530,
+        "y": 940,
+        "wires": [
+            [
+                "1af8a5f.f01915a"
+            ]
+        ]
+    },
+    {
+        "id": "83e1a51d.97f548",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 970,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "e71a0906.a266a8",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Registro de entrenamiento</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n        \n        <!-- Latest compiled and minified CSS -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n        \n        <!-- Optional theme -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n\n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n        \n        <!--script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js\"></script-->\n        <style>{{{payload.style}}}</style>\n    </head>\n    \n    <body> \n\t\t<header>\n\t\t\t<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<div class=\"navbar-header\">\n\t\t\t\t\t  <a class=\"navbar-brand\" href=\"/home\">Cognitive Trainer</a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<ul class=\"nav navbar-nav\">\n\t\t\t\t\t  <li class=\"active\"><a href=\"/home\">Home</a></li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Usuarios\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/registro_usuario\">Registro</a></li>\n\t\t\t\t\t\t  <li><a href=\"/ver_usuario\">Ver</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Entrenamiento\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/comienzo_entrenamiento\">Comenzar</a></li>\n\t\t\t\t\t\t  <li><a href=\"/historial_entrenamiento\">Historial</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li><a href=\"/estadisticas\">Estadisticas</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t\t<ul class=\"nav navbar-nav navbar-right\">\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Registro</a></li>\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t</nav>\n        </header>\n\t\t\n\t\t<div class=\"container\">\n\t\t\t<div class=\"jumbotron\">\n\t\t\t\t<h2>Registro de nuevo entrenamiento</h2>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div id=\"formulario\">\n\t\t\t    <form method=\"post\" action=\"/{{url}}\" ajax=\"true\">\n                    <label for=\"id\">ID</label>\n                \t<input type=\"text\" id=\"id\" name=\"id\">\n                    \n                    <label for=\"fname\">Nombre</label>\n                    <input type=\"text\" id=\"fname\" name=\"firstname\">\n                \n                    <label for=\"lname\">Descripcion</label>\n                    <input type=\"text\" id=\"lname\" name=\"lastname\">\n                \t\n\t\t\t\t\t<div class=\"checkbox\">\n\t\t\t\t\t\t<label><input type=\"checkbox\" value=\"crucedebalon\">Cruce de balon</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t<label for=\"tipo\">Tipo</label>\n                    <select id=\"tipo\" name=\"tipo\">\n                        <option value=\"1\">Simple</option>\n                        <option value=\"2\">Simon</option>\n                    </select>\n\t\t\t\t\t\n\t\t\t\t\t<div class=\"checkbox\">\n\t\t\t\t\t\t<label><input type=\"checkbox\" value=\"hitandscore\">Hit and score</label>\n\t\t\t\t\t</div>\n\t\t\t\t\t\n\t\t\t\t\t<label for=\"tipo\">Tipo</label>\n                    <select id=\"tipo\" name=\"tipo\">\n                        <option value=\"1\">Simple</option>\n                        <option value=\"2\">Simon</option>\n                    </select>\n\t\t\t\t\t\n                    <label for=\"email\">Repeticiones</label>\n                    <input type=\"text\" id=\"email\" name=\"email\">\n                \t\n\t\t\t\t\t<label for=\"email\">Series</label>\n                    <input type=\"text\" id=\"email\" name=\"email\">\n\t\t\t\t\t\n\t\t\t\t\t<label for=\"tipo\">Dificultad</label>\n                    <select id=\"tipo\" name=\"tipo\">\n                        <option value=\"1\">Facil</option>\n                        <option value=\"2\">Medio</option>\n\t\t\t\t\t\t<option value=\"2\">Dificil</option>\n                    </select>\n                  \n                \t<input type=\"submit\" value=\"Submit\">\n                </form>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div>\n\t\t\t\t<span id=\"result\"></span>\n\t\t\t</div>\n\t\t</div>\n\t\t\n        \n        \n    \n    </body>\n</html>\n\n<script>{{{payload.script}}}</script>",
+        "x": 830,
+        "y": 940,
+        "wires": [
+            [
+                "83e1a51d.97f548"
+            ]
+        ]
+    },
+    {
+        "id": "16d5813b.984caf",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Registro Entrenamiento",
+        "info": "",
+        "x": 180,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "97bca950.7e2378",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Submit entrenamiento",
+        "info": "",
+        "x": 180,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "b5025fd9.0f46a",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var id = global.get(\"id\"); \nvar name = global.get(\"fname\");\nvar surname = global.get(\"lname\");\nvar tel = global.get(\"tel\");\nvar mail = global.get(\"mail\");\nvar fechanac = global.get(\"fechanac\");\nvar rfid = global.get(\"rfid\");\n\n\n\nif(msg.payload.length > 0){\n    msg.payload = \"exists\";\n}\nelse {\n    var sql = \"insert into usuarios values (\" + id + \",'\" + name + \"','\" + surname + \"','\" + mail + \"',\" + tel + \",'\" + fechanac + \"','\" + rfid + \"')\";\n    msg.payload = sql;    \n\n    msg.topic=msg.payload;\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 690,
+        "y": 1060,
+        "wires": [
+            [
+                "abfaccbe.fb97a"
+            ]
+        ]
+    },
+    {
+        "id": "bf8fb62f.0e5dd8",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var id = msg.payload.id \n\nglobal.set(\"id\",msg.payload.id); \nglobal.set(\"fname\",msg.payload.firstname); \nglobal.set(\"lname\",msg.payload.lastname); \nglobal.set(\"tel\",msg.payload.tel);\nglobal.set(\"mail\",msg.payload.email); \nglobal.set(\"fechanac\",msg.payload.fechanac); \nglobal.set(\"tipo\",msg.payload.tipo); \nglobal.set(\"altura\",msg.payload.altura); \nglobal.set(\"peso\",msg.payload.peso); \nglobal.set(\"tipoDeDeportista\",msg.payload.tipoDeDeportista); \nglobal.set(\"rfid\",msg.payload.rfid); \n\nvar sql = \"select * from usuarios where UsuarioID=\" + id;\n\nmsg.payload = sql;\n\nmsg.topic=msg.payload;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 410,
+        "y": 1060,
+        "wires": [
+            [
+                "e9008f2f.fa251"
+            ]
+        ]
+    },
+    {
+        "id": "abfaccbe.fb97a",
+        "type": "switch",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "exists",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 410,
+        "y": 1140,
+        "wires": [
+            [
+                "507fbcb.eb01444"
+            ],
+            [
+                "f871f008.26a7f"
+            ]
+        ]
+    },
+    {
+        "id": "507fbcb.eb01444",
+        "type": "change",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "El usuario ya existe",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 600,
+        "y": 1120,
+        "wires": [
+            [
+                "f3a1cc47.e7ec8"
+            ]
+        ]
+    },
+    {
+        "id": "6148d40f.f53fac",
+        "type": "change",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "El registro fue exitoso",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1020,
+        "y": 1160,
+        "wires": [
+            [
+                "f3a1cc47.e7ec8"
+            ]
+        ]
+    },
+    {
+        "id": "257f03f9.2834fc",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var id = global.get(\"id\"); \nvar tipo = global.get(\"tipo\"); \nvar alt = global.get(\"altura\"); \nvar peso = global.get(\"peso\"); \nvar tipoDep = global.get(\"tipoDeDeportista\"); \n\nif(tipo===\"tipoDep\"){\n    var sql = \"insert into deportista values (\" + id + \",'\" + peso + \"','\" + alt + \"','\" + tipoDep + \"')\";\n    msg.payload = sql;    \n}else{\n    var sql = \"insert into entrenador values (\" + id + \");\";\n    msg.payload = sql;\n}\n\nmsg.topic=msg.payload;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 710,
+        "y": 1160,
+        "wires": [
+            [
+                "317045c2.ef58ea"
+            ]
+        ]
+    },
+    {
+        "id": "64cf9941.f40268",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Comienzo Entrenamiento",
+        "info": "",
+        "x": 190,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "8048ce0d.31246",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/comienzo_entrenamiento",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 210,
+        "y": 1300,
+        "wires": [
+            [
+                "a5f31fb4.685e5"
+            ]
+        ]
+    },
+    {
+        "id": "c9fa5b39.a9b538",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Comienzo de entrenamiento</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n        \n        <!-- Latest compiled and minified CSS -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n        \n        <!-- Optional theme -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n\n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n        \n        <!--script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js\"></script-->\n        \n\t\t<!-- Checkbox toggle -->\n\t\t<link href=\"https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css\" rel=\"stylesheet\">\n\t\t<script src=\"https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js\"></script>\n\t\t\n\t\t<style>{{{style}}}</style>\n\t\t\n        <!-- Javascript -->\n        <script type=\"text/javascript\">\n            {{{script}}}\n\t\t\t\n            var ws;\n            var wsUri = \"ws:\";\n            var loc = window.location;\n            console.log(loc);\n            if (loc.protocol === \"https:\") { wsUri = \"wss:\"; }\n            // This needs to point to the web socket in the Node-RED flow\n            // ... in this case it's ws/simple\n            wsUri += \"//\" + loc.host + loc.pathname.replace(\"comienzo_entrenamiento\",\"ws/simple\");\n\t\t\t\n\t\t\t$(function() {\n\t\t\t\t$( \"#hit-event\" ).hide();\n\t\t\t\t$( \"#cruce-event\" ).hide();\n\t\t\t\t$('#toggle-hit').change(function() {\n\t\t\t\t\tif($(this).prop('checked')){\n\t\t\t\t\t\t$( \"#hit-event\" ).show(1000);\n\t\t\t\t\t} else{\n\t\t\t\t\t\t$( \"#hit-event\" ).hide(750);\n\t\t\t\t\t}\n\t\t\t\t})\n\t\t\t\t$('#toggle-cruce').change(function() {\n\t\t\t\t\tif($(this).prop('checked')){\n\t\t\t\t\t\t$( \"#cruce-event\" ).show(1000);\n\t\t\t\t\t} else{\n\t\t\t\t\t\t$( \"#cruce-event\" ).hide(750);\n\t\t\t\t\t}\n\t\t\t\t})\n\t\t\t})\n\t\t\t\n            function wsConnect() {\n                console.log(\"connect\",wsUri);\n                ws = new WebSocket(wsUri);\n\n                ws.onmessage = function(msg) {\n                    var line = \"\";  // or uncomment this to overwrite the existing message\n                    // parse the incoming message as a JSON object\n                    var data = msg.data;\n        \t\t\t\n                    console.log(data);\n                    // build the output from the topic and payload parts of the object\n                    line += \"<p>\"+data+\"</p>\";\n                    // replace the messages div with the new \"line\"\n                    document.getElementById('RFIDDep').value = data;\n                    $('#leyendoRFID').hide(0);  \n\t\t\t\t\t$('#backgroundRFID').hide(0);\t\t\t\t\t\n                }\n                ws.onopen = function() {\n                    // update the status div with the connection status\n                    document.getElementById('status').innerHTML = \"connected\";\n                    \n                    document.getElementById(\"status-panel\").classList.remove('panel-primary');\n                    document.getElementById(\"status-panel\").classList.remove('panel-danger');\n                    \n                    document.getElementById(\"status-panel\").classList.add('panel-success');\n                    \n                    console.log(\"connected\");\n                }\n                ws.onclose = function() {\n                    // update the status div with the connection status\n                    document.getElementById('status').innerHTML = \"not connected\";\n                    \n                    document.getElementById(\"status-panel\").classList.remove('panel-primary');\n                    document.getElementById(\"status-panel\").classList.remove('panel-success');\n                    \n                    document.getElementById(\"status-panel\").classList.add('panel-danger');\n                    \n                    // in case of lost connection tries to reconnect every 3 secs\n                    setTimeout(wsConnect,3000);\n                }\n            }\n            \n        </script>\n    </head>\n    \n    <body onload=\"wsConnect();\" onunload=\"ws.disconnect();\">  \n\t\t<header>\n\t\t\t<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<div class=\"navbar-header\">\n\t\t\t\t\t  <a class=\"navbar-brand\" href=\"/home\">Cognitive Trainer</a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<ul class=\"nav navbar-nav\">\n\t\t\t\t\t  <li class=\"active\"><a href=\"/home\">Home</a></li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Usuarios\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/registro_usuario\">Registro</a></li>\n\t\t\t\t\t\t  <li><a href=\"/ver_usuario\">Ver</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Entrenamiento\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/comienzo_entrenamiento\">Comenzar</a></li>\n\t\t\t\t\t\t  <li><a href=\"/historial_entrenamiento\">Historial</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li><a href=\"/estadisticas\">Estadisticas</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t\t<ul class=\"nav navbar-nav navbar-right\">\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Registro</a></li>\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t</nav>\n        </header>\n        \n        <div class=\"container\">\n            <div class=\"jumbotron\">\n                <h2>Comienzo de entrenamiento</h2>\n            </div>\n            \n            <div class=\"panel panel-primary\" id=\"status-panel\">\n                <div class=\"panel-heading\">Status</div>\n                    <div class=\"panel-body\">\n                       <div id=\"status\">Connecting  </div>\n                    </div>\n\t\t\t</div>\n            \n            <div id=\"formulario\" class=\"row\">\n                <div class=\"col-sm-12\">\n    \t\t\t    <form method=\"post\" action=\"/{{url}}\" ajax=\"true\">\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t\t<label for=\"idDep\">ID Deportista</label>\n\t\t\t\t\t\t\t\t<input type=\"text\" id=\"RFIDDep\"name=\"RFIDDep\"></input>\n\t\t\t\t\t\t\t\t<button onClick=\"leerRFID();\" type=\"button\" class=\"btn btn-primary\" >Leer RFID</button>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t\t<label for=\"IDEnt\">ID Entrenador</label>\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t<input type=\"text\" id=\"IDEnt\"name=\"IDEnt\"></input>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t\t<label for=\"ent\">Entrenamiento</label>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t\t<div class=\"checkbox\">\n\t\t\t\t\t\t\t\t\t<label><input name=\"toggleHit\" id=\"toggle-hit\" type=\"checkbox\" value=\"1\" data-toggle=\"toggle\" data-onstyle=\"success\" data-offstyle=\"danger\" data-on=\"Hit and score\" data-off=\"Hit and score\"></label>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div id=\"hit-event\">\n\t\t\t\t\t\t\t\t\t<label for=\"tipoHit\">Tipo</label>\n\t\t\t\t\t\t\t\t\t<select id=\"tipoHit\" name=\"tipoHit\">\n\t\t\t\t\t\t\t\t\t\t<option value=\"1\">Simple</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"2\">Simon</option>\n\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t<label for=\"repHit\">Repeticiones</label>\n\t\t\t\t\t\t\t\t\t<select id=\"repHit\" name=\"repHit\">\n\t\t\t\t\t\t\t\t\t\t<option value=\"1\">1</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"2\">2</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"3\">3</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"4\">4</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"5\">5</option>\n\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t\t<div class=\"checkbox\">\n\t\t\t\t\t\t\t\t  <label><input name=\"toggleCruce\" id=\"toggle-cruce\" type=\"checkbox\" value=\"1\" data-toggle=\"toggle\" data-onstyle=\"success\" data-offstyle=\"danger\" data-on=\"Cruce de balon\" data-off=\"Cruce de balon\"></label>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div id=\"cruce-event\">\n\t\t\t\t\t\t\t\t\t<label for=\"tipoCruce\">Tipo</label>\n\t\t\t\t\t\t\t\t\t<select id=\"tipoCruce\" name=\"tipoCruce\">\n\t\t\t\t\t\t\t\t\t\t<option value=\"1\">Simple</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"2\">Simon</option>\n\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t<label for=\"repCruce\">Repeticiones</label>\n\t\t\t\t\t\t\t\t\t<select id=\"repCruce\" name=\"repCruce\">\n\t\t\t\t\t\t\t\t\t\t<option value=\"1\">1</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"2\">2</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"3\">3</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"4\">4</option>\n\t\t\t\t\t\t\t\t\t\t<option value=\"5\">5</option>\n\t\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n                    \t<div class=\"col-sm-12\">\n\t\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t\t<label for=\"serie\">Series</label>\n\t\t\t\t\t\t\t\t<input type=\"text\" id=\"serie\" name=\"serie\">\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t\t<label for=\"dif\">Dificultad</label>\n\t\t\t\t\t\t\t\t<select id=\"dif\" name=\"dif\">\n\t\t\t\t\t\t\t\t\t<option value=\"1\">Facil</option>\n\t\t\t\t\t\t\t\t\t<option value=\"2\">Medio</option>\n\t\t\t\t\t\t\t\t\t<option value=\"2\">Dificil</option>\n\t\t\t\t\t\t\t\t</select>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n                    \t<input type=\"submit\" value=\"Submit\">\n                    </form>\n                </div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div>\n\t\t\t\t<span id=\"result\"></span>\n\t\t\t</div>\n        </div>\n        <div id=\"backgroundRFID\">\n            <div id=\"leyendoRFID\">\n                <h2>Pase el tag por el lector...</h2>\n            </div>\n        </div>\n\t\t            \n    </body>\n</html>",
+        "x": 710,
+        "y": 1360,
+        "wires": [
+            [
+                "8b83170b.8422a8"
+            ]
+        ]
+    },
+    {
+        "id": "c78c70fc.5b1cd",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "JavaScript",
+        "field": "script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "plain",
+        "template": "$(document).ready(function(e) {\n\n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        var form_url = $(this).attr(\"action\");\n        var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: form_url, \n            type: form_method,      \n            data: form_data,     \n            cache: false,\n            success: function(returnhtml){                          \n                $(\"#result\").html(returnhtml); \n                $(\"#loadingimg\").hide();                    \n            }           \n        });    \n        \n    });\n    \n    $('#leyendoRFID').hide(0);\n    $('#backgroundRFID').hide(0);\n    \n    \n});\n\nfunction leerRFID(){\n    myWindow = window.open(\"/readRFID\", \"readRFID\", \"width=200,height=100\");\n    //$('#leyendoRFID').show(0).delay(4000).hide(0);    \n    $('#leyendoRFID').show(0);\n    $('#backgroundRFID').show(0);\n    myWindow.close();\n}\n",
+        "x": 410,
+        "y": 1360,
+        "wires": [
+            [
+                "cbe08992.cc6b98"
+            ]
+        ]
+    },
+    {
+        "id": "cbe08992.cc6b98",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "CSS",
+        "field": "style",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": ".btn-primary {\n    margin: 20px 0;\n}\n\ninput[type=text], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=submit] {\n    width: 100%;\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\ninput[type=submit]:hover {\n    background-color: #45a049;\n}\n\n#formulario {\n    margin: 0 5%;\n    border-radius: 5px;\n    background-color: #f2f2f2;\n    padding: 20px;\n    width: 90%;\n}\n\n#leyendoRFID {\n    \n    top: 50%;\n    left: 50%;\n    width:30em;\n    height:18em;\n    margin-top: -9em; /*set to a negative number 1/2 of your height*/\n    margin-left: -15em; /*set to a negative number 1/2 of your width*/\n    border: 1px solid #ccc;\n    background-color: #f3f3f3;\n    position:fixed;\n}\n\n#backgroundRFID{\n    background-color: rgba(17, 17, 17, 0.65);\n    position: fixed;\n    z-index: 9001;\n    top: 0px;\n    left: 0px;\n    width: 100%;\n    height: 100%;\n}",
+        "x": 570,
+        "y": 1360,
+        "wires": [
+            [
+                "c9fa5b39.a9b538"
+            ]
+        ]
+    },
+    {
+        "id": "8b83170b.8422a8",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 850,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "43b6e027.ddae6",
+        "type": "ibmiot in",
+        "z": "de6d9106.9ce4e",
+        "authentication": "boundService",
+        "apiKey": "",
+        "inputType": "evt",
+        "logicalInterface": "",
+        "ruleId": "",
+        "deviceId": "Master",
+        "applicationId": "",
+        "deviceType": "NodeMCU",
+        "eventType": "status",
+        "commandType": "",
+        "format": "json",
+        "name": "IBM IoT App In",
+        "service": "registered",
+        "allDevices": false,
+        "allApplications": false,
+        "allDeviceTypes": false,
+        "allLogicalInterfaces": false,
+        "allEvents": true,
+        "allCommands": false,
+        "allFormats": false,
+        "qos": "0",
+        "x": 160,
+        "y": 2180,
+        "wires": [
+            [
+                "b5e9b96b.c30df8",
+                "b0697465.865398"
+            ]
+        ]
+    },
+    {
+        "id": "b5e9b96b.c30df8",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var retorno;\n\nif(msg.payload.TipoCarga===\"Entrenamiento\"){\n    global.set(\"EntrenaID\",msg.payload.EntrenaID);\n    global.set(\"error\",msg.payload.error);\n    global.set(\"tiempo\",msg.payload.tiempo);\n    retorno = 0;\n} else {\n    global.set(\"RFID\",msg.payload.rfid);\n    retorno = 1;\n}\n\nretorno=parseInt(retorno);\n\nmsg.payload.retorno = retorno;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 330,
+        "y": 2180,
+        "wires": [
+            [
+                "9dbf42f9.d822e"
+            ]
+        ]
+    },
+    {
+        "id": "25fcd794.00ca98",
+        "type": "websocket out",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "server": "ae47ea4e.d73658",
+        "client": "",
+        "x": 1100,
+        "y": 2160,
+        "wires": []
+    },
+    {
+        "id": "76b78805.593ba8",
+        "type": "ibmiot out",
+        "z": "de6d9106.9ce4e",
+        "authentication": "boundService",
+        "apiKey": "",
+        "outputType": "cmd",
+        "deviceId": "Master",
+        "deviceType": "NodeMCU",
+        "eventCommandType": "rfid",
+        "format": "json",
+        "data": "rfid",
+        "qos": "",
+        "name": "Send to IBM IoT Platform",
+        "service": "registered",
+        "x": 550,
+        "y": 1940,
+        "wires": []
+    },
+    {
+        "id": "9b33ef4c.1b699",
+        "type": "inject",
+        "z": "de6d9106.9ce4e",
+        "name": "Send Data",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "x": 140,
+        "y": 1940,
+        "wires": [
+            [
+                "da940c72.938aa"
+            ]
+        ]
+    },
+    {
+        "id": "da940c72.938aa",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "Device payload",
+        "func": "// Create MQTT message in JSON\nmsg = {\n  payload: JSON.stringify(\n    {\n        \"EntrenaID\" : \"1\",\n        \"toggleHit\" : \"1\",\n        \"tipoHit\" : \"1\",\n        \"repHit\" : \"1\",\n        \"serHit\" : \"1\",\n        \"toggleCruce\" : \"1\",\n        \"tipoCruce\" : \"1\",\n        \"repCruce\" : \"1\",\n        \"serCruce\" : \"1\"\n    }\n  )\n};\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 320,
+        "y": 1940,
+        "wires": [
+            [
+                "76b78805.593ba8"
+            ]
+        ]
+    },
+    {
+        "id": "f12b49a0.ba8e08",
+        "type": "websocket in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "server": "ae47ea4e.d73658",
+        "client": "",
+        "x": 160,
+        "y": 2120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a5f31fb4.685e5",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "msg.url = \"/submitComienzoEntrenamiento\";",
+        "func": "msg.url = \"submitComienzoEntrenamiento\";\nmsg.mysql = global.get('mysql');\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 550,
+        "y": 1300,
+        "wires": [
+            [
+                "c78c70fc.5b1cd"
+            ]
+        ]
+    },
+    {
+        "id": "e6636ba3.dfab38",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/submitComienzoEntrenamiento",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 230,
+        "y": 1560,
+        "wires": [
+            [
+                "99c9720b.780db"
+            ]
+        ]
+    },
+    {
+        "id": "ddacf4c5.a40ba8",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1870,
+        "y": 1620,
+        "wires": []
+    },
+    {
+        "id": "822f1d73.66a4e",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var IDEnt = global.get(\"IDEnt\"); \n\n\nif(msg.payload.length > 0){\n    var sql = \"select * from entrenador where UsuarioID=\" + IDEnt;\n\n    msg.payload = sql;\n    \n    msg.topic=msg.payload;\n}\nelse {\n    msg.payload = \"No existe deportista\";\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 750,
+        "y": 1560,
+        "wires": [
+            [
+                "f50f21b9.663eb"
+            ]
+        ]
+    },
+    {
+        "id": "99c9720b.780db",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var RFIDDep = msg.payload.RFIDDep \n\nglobal.set(\"RFIDDep\",msg.payload.RFIDDep); \nglobal.set(\"IDEnt\",msg.payload.IDEnt); \nglobal.set(\"toggleHit\",msg.payload.toggleHit);\nglobal.set(\"tipoHit\",msg.payload.tipoHit);\nglobal.set(\"repHit\",msg.payload.repHit); \nglobal.set(\"toggleCruce\",msg.payload.toggleCruce);\nglobal.set(\"tipoCruce\",msg.payload.tipoCruce);\nglobal.set(\"repCruce\",msg.payload.repCruce); \nglobal.set(\"serie\",msg.payload.serie); \nglobal.set(\"dif\",msg.payload.dif); \n\nif(msg.payload.toggleCruce != \"1\"){\n    global.set(\"toggleCruce\",\"0\");\n}\nif(msg.payload.toggleHit != \"1\"){\n    global.set(\"toggleHit\",\"0\");\n}\n\nvar sql = \"select * from deportista where UsuarioID=\" + RFIDDep;\n\nmsg.payload = sql;\n\nmsg.topic=msg.payload;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 470,
+        "y": 1560,
+        "wires": [
+            [
+                "ede789ca.638d38"
+            ]
+        ]
+    },
+    {
+        "id": "f50f21b9.663eb",
+        "type": "switch",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "No existe deportista",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 370,
+        "y": 1640,
+        "wires": [
+            [
+                "aa4f5153.f447e"
+            ],
+            [
+                "ebf53750.54e668"
+            ]
+        ]
+    },
+    {
+        "id": "aa4f5153.f447e",
+        "type": "change",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "No existe deportista",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 1620,
+        "wires": [
+            [
+                "ddacf4c5.a40ba8"
+            ]
+        ]
+    },
+    {
+        "id": "f530d289.36e82",
+        "type": "change",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Entrenamiento ingresado, puede comenzar",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1820,
+        "y": 1740,
+        "wires": [
+            [
+                "ddacf4c5.a40ba8"
+            ]
+        ]
+    },
+    {
+        "id": "bf1f671b.5d82a8",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var RFIDDep = global.get(\"RFIDDep\"); \nvar IDEnt = global.get(\"IDEnt\"); \nvar dif = global.get(\"dif\"); \nvar toggleHit = global.get(\"toggleHit\");\n\nvar d = new Date();\n\n\nvar sql = \"insert into entrena (UsuarioDeportistaID, UsuarioEntrenadorID, fecha, dificultad) values (\"+RFIDDep+\",\"+IDEnt+\", NOW(),\"+dif+\");\";\nsql = sql + \"SELECT entrenaID FROM entrena ORDER BY  entrenaID DESC LIMIT 1;\"\n\nmsg.payload = sql;\n\nmsg.topic=msg.payload;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1210,
+        "y": 1740,
+        "wires": [
+            [
+                "573a92ab.6ad08c"
+            ]
+        ]
+    },
+    {
+        "id": "b0f25475.071488",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Web Socket section",
+        "info": "",
+        "x": 170,
+        "y": 2060,
+        "wires": []
+    },
+    {
+        "id": "4526df3e.be478",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/readRFID",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 1820,
+        "wires": [
+            [
+                "a82f8998.f30f98"
+            ]
+        ]
+    },
+    {
+        "id": "892019e.b6b4ee8",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 670,
+        "y": 1860,
+        "wires": []
+    },
+    {
+        "id": "8550a32c.eeee3",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Leer RFID",
+        "info": "",
+        "x": 140,
+        "y": 1760,
+        "wires": []
+    },
+    {
+        "id": "a82f8998.f30f98",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "// Create MQTT message in JSON\nmsg = {\n  payload: JSON.stringify(\n    {\n        \"rfid\" : \"read\",\n    }\n  )\n};\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 330,
+        "y": 1820,
+        "wires": [
+            [
+                "b04c6a49.4d28a8",
+                "a036d704.ed6738"
+            ]
+        ]
+    },
+    {
+        "id": "b04c6a49.4d28a8",
+        "type": "ibmiot out",
+        "z": "de6d9106.9ce4e",
+        "authentication": "boundService",
+        "apiKey": "",
+        "outputType": "cmd",
+        "deviceId": "Master",
+        "deviceType": "NodeMCU",
+        "eventCommandType": "rfid",
+        "format": "json",
+        "data": "rfid",
+        "qos": "",
+        "name": "Send to IBM IoT Platform",
+        "service": "registered",
+        "x": 570,
+        "y": 1800,
+        "wires": []
+    },
+    {
+        "id": "a036d704.ed6738",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Registro de usuario</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n        \n        <!-- Latest compiled and minified CSS -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n        \n        <!-- Optional theme -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n\n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n    </head>\n    \n    <body> \n    <nav class=\"navbar navbar-inverse\">\n            <div class=\"container-fluid\">\n                <div class=\"navbar-header\">\n                  <a class=\"navbar-brand\" href=\"#\">Cognitive Trainer</a>\n                </div>\n                <ul class=\"nav navbar-nav\">\n                  <li class=\"active\"><a href=\"/home\">Home</a></li>\n                  <li class=\"dropdown\">\n                    <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Usuarios\n                    <span class=\"caret\"></span></a>\n                    <ul class=\"dropdown-menu\">\n                      <li><a href=\"#\">Registro</a></li>\n                      <li><a href=\"/ver_usuario\">Ver</a></li>\n                    </ul>\n                  </li>\n                  <li><a href=\"#\">Entrenamiento</a></li>\n                  <li><a href=\"#\">Estadisticas</a></li>\n                </ul>\n            </div>\n        </nav>\n\t\t\n\t\t<div class=\"container\">\n\t\t\t<div class=\"jumbotron\">\n\t\t\t\t<h2>Registro de nuevo usuario</h2>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div id=\"formulario\">\n\t\t\t    <form method=\"post\" action=\"/{{url}}\" ajax=\"true\">\n                    <label for=\"id\">ID</label>\n                \t<input type=\"text\" id=\"id\" name=\"id\">\n                    \n                    <label for=\"fname\">Nombre</label>\n                    <input type=\"text\" id=\"fname\" name=\"firstname\">\n                \n                    <label for=\"lname\">Apellido</label>\n                    <input type=\"text\" id=\"lname\" name=\"lastname\">\n                \t\n                    <label for=\"email\">Email</label>\n                    <input type=\"text\" id=\"email\" name=\"email\">\n                \t\n                    <label for=\"tel\">Telefono</label>\n                    <input type=\"text\" id=\"tel\" name=\"tel\">\n                \t\n\t\t\t\t\t<label for=\"fechanac\">Fecha de nacimiento</label>\n                    <input type=\"date\" id=\"fechanac\" name=\"fechanac\" class=\"form-control\" >\n                \t\n                    <label for=\"tipo\">Tipo</label>\n                    <select id=\"tipo\" name=\"tipo\" onChange=\"tipoDeportista();\">\n                        <option value=\"tipoDep\">Deportista</option>\n                        <option value=\"tipoEnt\">Entrenador</option>\n                    </select>\n                \t\n                    <div id=\"datosDeportista\">\n                \t\t<label for=\"altura\">Altura</label>\n                \t\t<input type=\"text\" id=\"altura\" name=\"altura\">\n                \t\t\n                \t\t<label for=\"peso\">Peso</label>\n                \t\t<input type=\"text\" id=\"peso\" name=\"peso\">\n                \t\t\n                \t\t<label for=\"tipoDeDeportista\">Tipo de deportista</label>\n                \t\t<select id=\"tipoDeDeportista\" name=\"tipoDeDeportista\">\n                        <option value=\"amateur\">Amateur</option>\n                        <option value=\"semiprof\">Semi-Profesional</option>\n                        <option value=\"prof\">Profesional</option>\n                        </select>\n                \t</div>\n                \t\n                \t<label for=\"rfid\">RFID</label>\n                \t<input type=\"text\" id=\"rfid\" name=\"rfid\">\n                  \n                \t<input type=\"submit\" value=\"Submit\">\n                </form>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div>\n\t\t\t\t<span id=\"result\"></span>\n\t\t\t</div>\n\t\t</div>\n\t\t\n        \n        \n    \n    </body>\n</html>\n\n<script>{{{payload.script}}}</script>",
+        "output": "str",
+        "x": 520,
+        "y": 1860,
+        "wires": [
+            [
+                "892019e.b6b4ee8"
+            ]
+        ]
+    },
+    {
+        "id": "47514ccb.aef2e4",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 470,
+        "y": 700,
+        "wires": [
+            [
+                "21e78530.02732a"
+            ]
+        ]
+    },
+    {
+        "id": "3b2421ba.fb266e",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 510,
+        "y": 460,
+        "wires": [
+            [
+                "a01d5f29.83b1"
+            ]
+        ]
+    },
+    {
+        "id": "4e205244.3cf01c",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 510,
+        "y": 560,
+        "wires": [
+            [
+                "7421cd0.09d4e34"
+            ]
+        ]
+    },
+    {
+        "id": "ed33a7cd.4c9088",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 790,
+        "y": 560,
+        "wires": [
+            [
+                "2f62b4e8.470e3c"
+            ]
+        ]
+    },
+    {
+        "id": "e9008f2f.fa251",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 550,
+        "y": 1060,
+        "wires": [
+            [
+                "b5025fd9.0f46a"
+            ]
+        ]
+    },
+    {
+        "id": "f871f008.26a7f",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 570,
+        "y": 1160,
+        "wires": [
+            [
+                "257f03f9.2834fc"
+            ]
+        ]
+    },
+    {
+        "id": "317045c2.ef58ea",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 850,
+        "y": 1160,
+        "wires": [
+            [
+                "6148d40f.f53fac"
+            ]
+        ]
+    },
+    {
+        "id": "ede789ca.638d38",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 610,
+        "y": 1560,
+        "wires": [
+            [
+                "822f1d73.66a4e"
+            ]
+        ]
+    },
+    {
+        "id": "ebf53750.54e668",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 510,
+        "y": 1660,
+        "wires": [
+            [
+                "ac60051e.2a02e8"
+            ]
+        ]
+    },
+    {
+        "id": "573a92ab.6ad08c",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 1350,
+        "y": 1740,
+        "wires": [
+            [
+                "7f62a51a.483a7c",
+                "72dcd2ab.d88cfc"
+            ]
+        ]
+    },
+    {
+        "id": "61d7effd.b663c",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Submit Comienzo Entrenamiento",
+        "info": "",
+        "x": 210,
+        "y": 1500,
+        "wires": []
+    },
+    {
+        "id": "7f62a51a.483a7c",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "// Create MQTT message in JSON\nvar toggleHit = global.get(\"toggleHit\");\nvar tipoHit = global.get(\"tipoHit\"); \nvar repHit = global.get(\"repHit\"); \nvar toggleCruce = global.get(\"toggleCruce\");\nvar tipoCruce = global.get(\"tipoCruce\"); \nvar repCruce = global.get(\"repCruce\"); \nvar serie = global.get(\"serie\"); \n\nmsg = {\n  payload: JSON.stringify(\n    {\n        \"EntrenaID\" : msg.payload[1][0].entrenaID,\n        \"toggleHit\" : toggleHit,\n        \"tipoHit\" : tipoHit,\n        \"repHit\" : repHit,\n        \"toggleCruce\" : toggleCruce,\n        \"tipoCruce\" : tipoCruce,\n        \"repCruce\" : repCruce,\n        \"serie\" : serie\n    }\n  )\n};    \n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1510,
+        "y": 1800,
+        "wires": [
+            [
+                "9f8103ab.089f8"
+            ]
+        ]
+    },
+    {
+        "id": "c35a78c1.0e9828",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 790,
+        "y": 2160,
+        "wires": [
+            [
+                "cf3671fd.41b51"
+            ]
+        ]
+    },
+    {
+        "id": "96a5bb4b.a3c258",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var rfid = global.get(\"RFID\"); \n\nvar sql = \"select usuarioID from usuarios where rfid='\" + rfid+\"'\";\n\nmsg.payload = sql;\n\nmsg.topic = msg.payload;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 650,
+        "y": 2160,
+        "wires": [
+            [
+                "c35a78c1.0e9828"
+            ]
+        ]
+    },
+    {
+        "id": "cf3671fd.41b51",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "if(msg.payload.length > 0){\n    //msg.payload = \"exists\";\n    //msg.deportistaID =  msg.payload;\n    msg.payload=msg.payload[0].usuarioID\n}\nelse {\n    msg.payload = \"No existe\";    \n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 930,
+        "y": 2160,
+        "wires": [
+            [
+                "25fcd794.00ca98"
+            ]
+        ]
+    },
+    {
+        "id": "8f110b3d.3910a8",
+        "type": "switch",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "No existe entrenador",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 790,
+        "y": 1660,
+        "wires": [
+            [
+                "96aa9993.d85a58"
+            ],
+            [
+                "996e08d5.12c388"
+            ]
+        ]
+    },
+    {
+        "id": "ac60051e.2a02e8",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var IDEnt = global.get(\"IDEnt\"); \n\n\nif(msg.payload.length > 0){\n    var sql = \"select * from entrenador where UsuarioID=\" + IDEnt;\n\n    msg.payload = sql;\n    \n    msg.topic=msg.payload;\n}\nelse {\n    msg.payload = \"No existe entrenador\";\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 650,
+        "y": 1660,
+        "wires": [
+            [
+                "8f110b3d.3910a8"
+            ]
+        ]
+    },
+    {
+        "id": "96aa9993.d85a58",
+        "type": "change",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "No existe entrenador",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 960,
+        "y": 1640,
+        "wires": [
+            [
+                "ddacf4c5.a40ba8"
+            ]
+        ]
+    },
+    {
+        "id": "a15cbf61.70339",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/historial_entrenamiento",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 2360,
+        "wires": [
+            [
+                "538ca7de.fd01f8"
+            ]
+        ]
+    },
+    {
+        "id": "538ca7de.fd01f8",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "msg.url = \"/editarEntrenamiento\";",
+        "func": "msg.url = \"editarEntrenamiento\";\nmsg.mysql = global.get('mysql');\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 520,
+        "y": 2360,
+        "wires": [
+            [
+                "72e8b772.db1428"
+            ]
+        ]
+    },
+    {
+        "id": "d6432ae0.929808",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Historial de entrenamiento",
+        "info": "",
+        "x": 190,
+        "y": 2300,
+        "wires": []
+    },
+    {
+        "id": "7cd74546.5b9dfc",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Historial de Entrenamientos</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n        <!-- Latest compiled and minified CSS -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n        \n        <!-- Optional theme -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n\n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n        \n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js\"></script>\n        <style>{{{payload.style}}}</style>\n    </head>\n    \n    <body>  \n\t\t<header>\n\t\t\t<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<div class=\"navbar-header\">\n\t\t\t\t\t  <a class=\"navbar-brand\" href=\"/home\">Cognitive Trainer</a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<ul class=\"nav navbar-nav\">\n\t\t\t\t\t  <li class=\"active\"><a href=\"/home\">Home</a></li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Usuarios\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/registro_usuario\">Registro</a></li>\n\t\t\t\t\t\t  <li><a href=\"/ver_usuario\">Ver</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Entrenamiento\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/comienzo_entrenamiento\">Comenzar</a></li>\n\t\t\t\t\t\t  <li><a href=\"/historial_entrenamiento\">Historial</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li><a href=\"/estadisticas\">Estadisticas</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t\t<ul class=\"nav navbar-nav navbar-right\">\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Registro</a></li>\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t</nav>\n        </header>\n        \n        <div class=\"container\">\n            <div class=\"jumbotron\">\n                <h2>Historial de entrenamientos</h2>\n            </div>\n            \n            <div id=\"deportistas\"></div>\n        </div>    \n    </body>\n</html>\n\n<script>\n    {{{payload.script}}}\n    function completeAndRedirect(entrenaID){\n        //alert('https://cognitivetrainerv2.mybluemix.net/editar_entrenamiento?entrenaID='+entrenaID);\n        location.href='https://cognitivetrainerv2.mybluemix.net/editar_entrenamiento?entrenaID='+entrenaID;\n    }\n\n    \n    var html = '<div class=\"table responsive\"><table class=\"table table-striped\">';\n\thtml += \"<thead><tr><th>Numero Entrenamiento</th><th>Deportista</th><th>Entrenador</th><th>Fecha</th><th>Calificacion</th><th>Observaciones</th><th>Dificultad</th><th>Editar</th></tr></thead>\";\n    \n\tvar arrayPayload = {{{payload}}};\n    \n\tif(arrayPayload.length > 0){\n        for (i = 0; i < arrayPayload.length; i++) {\n            var fecha = arrayPayload[i].fecha;\n            var date = new Date(fecha);\n            var dd = date.getDate();\n            var mm = date.getMonth();\n            var yy = date.getFullYear();\n            \n            mm += 1;\n            \n            fecha = dd + \"/\" + mm + \"/\" + yy;    \n    \t\t\n    \t\thtml += \"<tr>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].entrenaID + \"</td>\";\n\t\t\thtml += \"<td>\" + arrayPayload[i].UsuarioDeportistaID + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].UsuarioEntrenadorID + \"</td>\";\n    \t\thtml += \"<td>\" + fecha + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].CalificacionDeportista + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].ObservacionEntrenador + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].dificultad + \"</td>\";\n\t\t\thtml += \"<td><button  type='button' class='btn btn-info' onClick='completeAndRedirect(this.id);' id='\" + arrayPayload[i].entrenaID + \"'>Editar</button></td>\";\n    \t\thtml += \"</tr>\";\n        }\n\t}\n\telse{\t\n\t\thtml += \"<tr><td colspan='7'>No hay entrenamientos ingresados<td></tr>\";\n\t}\n    html +=\"</table></div>\";\n    document.getElementById(\"deportistas\").innerHTML = html;\n</script>",
+        "x": 970,
+        "y": 2440,
+        "wires": [
+            [
+                "8cb7ba5f.7fd838"
+            ]
+        ]
+    },
+    {
+        "id": "e06b78af.b7f448",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "JavaScript",
+        "field": "payload.script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "plain",
+        "template": "\n$(document).ready(function(e) {\n    \n    document.getElementById(\"deportistas\").innerHTML = msg.payload;\n    \n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        var form_url = $(this).attr(\"action\");\n        var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: form_url, \n            type: form_method,      \n            data: form_data,     \n            cache: false,\n            success: function(returnhtml){                          \n                $(\"#result\").html(returnhtml); \n                $(\"#loadingimg\").hide();                    \n            }           \n        });    \n        \n    });\n    \n});\n\n",
+        "x": 670,
+        "y": 2440,
+        "wires": [
+            [
+                "aae194f5.ba3308"
+            ]
+        ]
+    },
+    {
+        "id": "aae194f5.ba3308",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "CSS",
+        "field": "payload.style",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "input[type=text], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=submit] {\n    width: 100%;\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\ninput[type=submit]:hover {\n    background-color: #45a049;\n}\n\ndiv {\n    border-radius: 5px;\n    background-color: #f2f2f2;\n    padding: 20px;\n}",
+        "x": 830,
+        "y": 2440,
+        "wires": [
+            [
+                "7cd74546.5b9dfc"
+            ]
+        ]
+    },
+    {
+        "id": "e9248bc8.932468",
+        "type": "json",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 510,
+        "y": 2440,
+        "wires": [
+            [
+                "e06b78af.b7f448"
+            ]
+        ]
+    },
+    {
+        "id": "474eab93.74d0d4",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 370,
+        "y": 2440,
+        "wires": [
+            [
+                "e9248bc8.932468"
+            ]
+        ]
+    },
+    {
+        "id": "8cb7ba5f.7fd838",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1130,
+        "y": 2440,
+        "wires": []
+    },
+    {
+        "id": "72e8b772.db1428",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "msg.payload=\"select * from entrena\";\nmsg.topic = msg.payload; \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 230,
+        "y": 2440,
+        "wires": [
+            [
+                "474eab93.74d0d4"
+            ]
+        ]
+    },
+    {
+        "id": "101762ea.6ba24d",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Editar entrenamiento",
+        "info": "",
+        "x": 170,
+        "y": 2520,
+        "wires": []
+    },
+    {
+        "id": "abe89655.a186f8",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "CSS",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "css",
+        "syntax": "mustache",
+        "template": "/* Carousel\n-------------------------------------------------- */\n/* Padding below the footer and lighter body text */\n\nbody {\n  padding-top: 3rem;\n  padding-bottom: 3rem;\n  color: #5a5a5a;\n}\n\n\n/* CUSTOMIZE THE CAROUSEL\n-------------------------------------------------- */\n\n/* Carousel base class */\n.carousel {\n  margin-bottom: 4rem;\n}\n\n/* Since positioning the image, we need to help out the caption */\n.carousel-caption {\n  bottom: 3rem;\n  z-index: 10;\n}\n\n/* Declare heights because of positioning of img element */\n.carousel-item {\n  height: 32rem;\n  background-color: #777;\n}\n\n.carousel-item > img {\n  position: absolute;\n  top: 0;\n  left: 0;\n  min-width: 100%;\n  height: 32rem;\n}\n\n\n/* MARKETING CONTENT\n-------------------------------------------------- */\n\n/* Center align the text within the three columns below the carousel */\n.marketing .col-lg-4 {\n  margin-bottom: 1.5rem;\n  text-align: center;\n}\n.marketing h2 {\n  font-weight: 400;\n}\n.marketing .col-lg-4 p {\n  margin-right: .75rem;\n  margin-left: .75rem;\n}\n\n\n/* Featurettes\n------------------------- */\n\n.featurette-divider {\n  margin: 5rem 0; /* Space out the Bootstrap <hr> more */\n}\n\n/* Thin out the marketing headings */\n.featurette-heading {\n  font-weight: 300;\n  line-height: 1;\n  letter-spacing: -.05rem;\n}\n\n\n/* RESPONSIVE CSS\n-------------------------------------------------- */\n\n@media (min-width: 40em) {\n  /* Bump up size of carousel content */\n  .carousel-caption p {\n    margin-bottom: 1.25rem;\n    font-size: 1.25rem;\n    line-height: 1.4;\n  }\n\n  .featurette-heading {\n    font-size: 50px;\n  }\n}\n\n@media (min-width: 62em) {\n  .featurette-heading {\n    margin-top: 7rem;\n  }\n}\n",
+        "output": "str",
+        "x": 470,
+        "y": 120,
+        "wires": [
+            [
+                "cb97b4ba.7df838"
+            ]
+        ]
+    },
+    {
+        "id": "5881c0c6.18fd7",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/editar_entrenamiento",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 2580,
+        "wires": [
+            [
+                "f656aa2f.346548"
+            ]
+        ]
+    },
+    {
+        "id": "47b7b202.898b9c",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Editar entrenamiento</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n        \n        \n        <!-- Latest compiled and minified CSS -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n        \n        <!-- Optional theme -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n\n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n        \n        <style>{{{style}}}</style>\n\t\t\n        <!--script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js\"></script-->\n        \n        <!-- Javascript -->\n        <script type=\"text/javascript\">\n            {{{script}}}\n        </script>\n    </head>\n    \n    <body onload=\"wsConnect();\" onunload=\"ws.disconnect();\">  \n\t\t<nav class=\"navbar navbar-inverse navbar-static-top\">\n            <div class=\"container-fluid\">\n                <div class=\"navbar-header\">\n                  <a class=\"navbar-brand\" href=\"/home\">Cognitive Trainer</a>\n                </div>\n                <ul class=\"nav navbar-nav\">\n                  <li class=\"active\"><a href=\"#\">Home</a></li>\n                  <li class=\"dropdown\">\n                    <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Usuarios\n                    <span class=\"caret\"></span></a>\n                    <ul class=\"dropdown-menu\">\n                      <li><a href=\"/registro_usuario\">Registro</a></li>\n                      <li><a href=\"/ver_usuario\">Ver</a></li>\n                    </ul>\n                  </li>\n\t\t\t\t  <li class=\"dropdown\">\n                    <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Entrenamiento\n                    <span class=\"caret\"></span></a>\n                    <ul class=\"dropdown-menu\">\n                      <li><a href=\"/comienzo_entrenamiento\">Comenzar</a></li>\n                      <li><a href=\"/historial_entrenamiento\">Historial</a></li>\n                    </ul>\n                  </li>\n                  <li><a href=\"#\">Estadisticas</a></li>\n                </ul>\n                <ul class=\"nav navbar-nav navbar-right\">\n                  <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Registro</a></li>\n                  <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n                </ul>\n            </div>\n        </nav>\n        \n        <div class=\"container\">\n            <div class=\"jumbotron\">\n                <h2>Editar entrenamiento</h2>\n            </div>\n            \n            <div id=\"formulario\" class=\"row\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-md-3 col-3 center\">\n\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/running_640.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t<h5><label id=\"idDep\" name=\"idDep\">IDDEP</label></h5>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"col-md-3 col-3 center\">\n\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/coach_1.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t<h5><label id=\"idEnt\" name=\"idEnt\">IDENT</label></h5>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"col-md-3 col-3 center\">\n\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/numbered.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t<h5><label id=\"cantSeries\" name=\"cantSeries\">Series</label></h5>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"col-md-3 col-3 center\">\n\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/traffic-light.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t<h5><label id=\"dificultad\" name=\"dificultad\">Dificultad</label></h5>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t<div class=\"col-md-4 col-4 center\">\n\t\t\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/gym_1.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t\t\t<h5><label id=\"nomEnt\" name=\"nomEnt\">Hit and score</label></h5>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"col-md-4 col-4 center\">\n\t\t\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/simon.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t\t\t<h5><label id=\"lbltipoHit\" name=\"nomTipo\">Tipo</label></h5>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"col-md-4 col-4 center\">\n\t\t\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/reloading-arrow.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t\t\t<h5><label id=\"lblcantRepHit\" name=\"cantRep\">Repeticiones</label></h5>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t<div class=\"col-md-4 col-4 center\">\n\t\t\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/gym_1.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t\t\t<h5><label id=\"nomEnt\" name=\"nomEnt\">Cruce de balon</label></h5>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"col-md-4 col-4 center\">\n\t\t\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/simon.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t\t\t<h5><label id=\"lbltipoCruce\" name=\"lbltipoIDCruce\">Tipo</label></h5>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"col-md-4 col-4 center\">\n\t\t\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/reloading-arrow.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t\t\t<h5><label id=\"lblcantRepCruce\" name=\"lblcantRepCruce\">Repeticiones</label></h5>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t<div class=\"col-md-12 col-12 center\">\n\t\t\t\t\t\t\t\t<label for=\"idDep\">Puntaje / Errores</label>\n\t\t\t\t\t\t\t\t<div class=\"progress\">\n\t\t\t\t\t\t\t\t  <div id=\"puntajeHit\" class=\"progress-bar progress-bar-success\" role=\"progressbar\" style=\"width: 50%\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\">5</div>\n\t\t\t\t\t\t\t\t  <div id=\"errorHit\" class=\"progress-bar progress-bar-danger\" role=\"progressbar\" style=\"width: 50%\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\">5</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t<div class=\"col-md-12 col-12 center\">\n\t\t\t\t\t\t\t\t<label for=\"idDep\">Puntaje / Errores</label>\n\t\t\t\t\t\t\t\t<div class=\"progress\">\n\t\t\t\t\t\t\t\t  <div id=\"puntajeCruce\" class=\"progress-bar progress-bar-success\" role=\"progressbar\" style=\"width: 50%\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\">5</div>\n\t\t\t\t\t\t\t\t  <div id=\"errorCruce\" class=\"progress-bar progress-bar-danger\" role=\"progressbar\" style=\"width: 50%\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\">5</div>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-12\">\n\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t<div class=\"col-md-12 col-12 center\">\n\t\t\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/stopwatch.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t\t\t<label for=\"lblTiempo\">Tiempo: </label>\n\t\t\t\t\t\t\t\t<label id=\"valTiempoHit\">22\" 23'</label>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t\t<div class=\"col-md-12 col-12 center\">\n\t\t\t\t\t\t\t\t<img src=\"http://cognitivetrainer.helpc.com.uy/wp-content/uploads/2018/07/stopwatch.png\" alt=\"\" class=\"img-circle\" style=\"width: 60px; height: 60px;\">\n\t\t\t\t\t\t\t\t<label for=\"lblTiempo\">Tiempo: </label>\n\t\t\t\t\t\t\t\t<label id=\"valTiempoCruce\">22\" 23'</label>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-md-12\">\n\t\t\t\t\t\t<form method=\"post\" action=\"/{{url}}\" ajax=\"true\">\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t<label for=\"dif\">Calificacion</label>\n\t\t\t\t\t\t\t\t<input type=\"text\" id=\"calificacion\" name=\"calificacion\">\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<div class=\"form-group\">\n\t\t\t\t\t\t\t\t<label for=\"dif\">Observaciones</label>\n\t\t\t\t\t\t\t\t<input type=\"text\" id=\"observaciones\" name=\"observaciones\">\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t<input type=\"submit\" value=\"Submit\">\n\t\t\t\t\t\t</form>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div>\n\t\t\t\t<span id=\"result\"></span>\n\t\t\t</div>\n        </div>\n    </body>\n</html>\n\n<script>\n    \n\t{{{payload.script}}}\n    var arrayPayload = {{{payload}}};\n\t\n\tif(arrayPayload.length > 0){\n\t\tdocument.getElementById('idDep').innerHTML = arrayPayload[0].UsuarioDeportistaID;\n\t\tdocument.getElementById('idEnt').innerHTML = arrayPayload[0].UsuarioEntrenadorID;\n\t\tvar dificultad = arrayPayload[0].dificultad;\n\t\t\n\t\tif(dificultad===1){\n\t\t\tvar lblDificultad=\"Facil\";\n\t\t} else if(dificultad===2){\n\t\t\tvar lblDificultad=\"Media\";\n\t\t} else {\n\t\t\tvar lblDificultad=\"Dificil\";\n\t\t}\n\t\t\n\t\tdocument.getElementById('dificultad').innerHTML=lblDificultad;\n\t\t\n\t\tvar EntrID0 = arrayPayload[0].EntrID;\n\t\tvar EntrID1 = arrayPayload[1].EntrID;\n\t\tif(EntrID0 === 1){\n\t\t\t//Hit Array numero 0\n\t\t\tvar tipoHit = arrayPayload[0].TipoID;\n\t\t\tif(tipoHit === 1){\n\t\t\t\tvar lbltipoHit = \"No\";\n\t\t\t} else {\n\t\t\t\tvar lbltipoHit = \"Si\";\n\t\t\t}\n\t\t\tvar lblcantRepHit = arrayPayload[0].repeticion;\n\t\t\tvar serie = arrayPayload[0].serie;\n\t\t\tvar errorHit = arrayPayload[0].error;\n\t\t\tvar valTiempoHit = arrayPayload[0].tiempo;\n\t\t\tvar puntajeHit = lblcantRepCruce - errorCruce;\n\t\t\t\n\t\t\t// Cruce Array 1\n\t\t\tvar tipoCruce = arrayPayload[1].TipoID;\n\t\t\tif(tipoCruce === 1){\n\t\t\t\tvar lbltipoCruce = \"No\";\n\t\t\t} else {\n\t\t\t\tvar lbltipoCruce = \"Si\";\n\t\t\t}\n\t\t\tvar lblcantRepCruce = arrayPayload[1].repeticion;\n\t\t\tvar serie = arrayPayload[1].serie;\n\t\t\tvar errorCruce = arrayPayload[1].error;\n\t\t\tvar valTiempoCruce = arrayPayload[1].tiempo;\n\t\t\tvar puntajeCruce = lblcantRepCruce - errorCruce;\n\t\t} else {\n\t\t\t// Cruce Array 0\n\t\t\tvar tipoCruce = arrayPayload[0].TipoID;\n\t\t\tif(tipoCruce === 1){\n\t\t\t\tvar lbltipoCruce = \"No\";\n\t\t\t} else {\n\t\t\t\tvar lbltipoCruce = \"Si\";\n\t\t\t}\n\t\t\tvar lblcantRepCruce = arrayPayload[0].repeticion;\n\t\t\tvar serie = arrayPayload[0].serie;\n\t\t\tvar errorCruce = arrayPayload[0].error;\n\t\t\tvar valTiempoCruce = arrayPayload[0].tiempo;\n\t\t\tvar puntajeCruce = lblcantRepCruce - errorCruce;\n\t\t\t\n\t\t\t//Hit Array numero 1\n\t\t\tvar tipoHit = arrayPayload[1].TipoID;\n\t\t\tif(tipoHit === 1){\n\t\t\t\tvar lbltipoHit = \"No\";\n\t\t\t} else {\n\t\t\t\tvar lbltipoHit = \"Si\";\n\t\t\t}\n\t\t\tvar lblcantRepHit = arrayPayload[1].repeticion;\n\t\t\tvar serie = arrayPayload[1].serie;\n\t\t\tvar errorHit = arrayPayload[1].error;\n\t\t\tvar valTiempoHit = arrayPayload[1].tiempo;\n\t\t\tvar puntajeHit = lblcantRepCruce - errorCruce;\n\t\t\t\n\t\t}\n\t\t\n\t\t\n\t\t//Hit\n\t\tdocument.getElementById('lbltipoHit').innerHTML = lbltipoCruce;\n\t\tdocument.getElementById('lblcantRepHit').innerHTML = lblcantRepCruce;\n\t\tdocument.getElementById('valTiempoHit').innerHTML = valTiempo;\n\t\tdocument.getElementById('puntajeHit').innerHTML = puntajeCruce;\n\t\tdocument.getElementById('errorHit').innerHTML = errorCruce;\n\t\t\n\t\t//Cruce\n\t\tdocument.getElementById('lbltipoCruce').innerHTML = lbltipoCruce;\n\t\tdocument.getElementById('lblcantRepCruce').innerHTML = lblcantRepCruce;\n\t\tdocument.getElementById('valTiempoCruce').innerHTML = valTiempo;\n\t\tdocument.getElementById('puntajeCruce').innerHTML = puntajeCruce;\n\t\tdocument.getElementById('errorCruce').innerHTML = errorCruce;\n\t\t\n\t\t//General\n\t\tdocument.getElementById('cantSeries').innerHTML = serie;\n\t\tdocument.getElementById('calificacion').innerHTML = arrayPayload[0].calificacionDeportista;\t\t\n\t\tdocument.getElementById('observaciones').innerHTML = arrayPayload[0].observacionEntrenador;\n\t}\n</script>",
+        "x": 690,
+        "y": 2640,
+        "wires": [
+            [
+                "91df5a15.b40558"
+            ]
+        ]
+    },
+    {
+        "id": "b6a65194.911d1",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "JavaScript",
+        "field": "script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "plain",
+        "template": "$(document).ready(function(e) {\n\n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        var form_url = $(this).attr(\"action\");\n        var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: form_url, \n            type: form_method,      \n            data: form_data,     \n            cache: false,\n            success: function(returnhtml){                          \n                $(\"#result\").html(returnhtml); \n                $(\"#loadingimg\").hide();                    \n            }           \n        });    \n        \n    });\n    \n    $('#leyendoRFID').hide(0);\n    $('#backgroundRFID').hide(0);\n    \n    \n});",
+        "x": 390,
+        "y": 2640,
+        "wires": [
+            [
+                "ff78be20.a2b0c"
+            ]
+        ]
+    },
+    {
+        "id": "ff78be20.a2b0c",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "CSS",
+        "field": "style",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "label {\n    margin-bottom: 15px !important;\n}\n\ninput[type=text], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 10px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=submit] {\n    width: 100%;\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\ninput[type=submit]:hover {\n    background-color: #45a049;\n}\n\n#formulario {\n    margin: 0 5%;\n    border-radius: 5px;\n    background-color: #f2f2f2;\n    padding: 20px;\n    width: 90%;\n}\n\n#leyendoRFID {\n    top: 50%;\n    left: 50%;\n    width:30em;\n    height:18em;\n    margin-top: -9em; /*set to a negative number 1/2 of your height*/\n    margin-left: -15em; /*set to a negative number 1/2 of your width*/\n    border: 1px solid #ccc;\n    background-color: #f3f3f3;\n    position:fixed;\n}\n\n#backgroundRFID{\n    background-color: rgba(17, 17, 17, 0.65);\n    position: fixed;\n    z-index: 9001;\n    top: 0px;\n    left: 0px;\n    width: 100%;\n    height: 100%;\n}\n\n.row {\n    margin: 15px 0;",
+        "x": 550,
+        "y": 2640,
+        "wires": [
+            [
+                "47b7b202.898b9c"
+            ]
+        ]
+    },
+    {
+        "id": "91df5a15.b40558",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 830,
+        "y": 2640,
+        "wires": []
+    },
+    {
+        "id": "79ae7d9f.d29d74",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "msg.url = \"/submitComienzoEntrenamiento\";",
+        "func": "msg.url = \"submitComienzoEntrenamiento\";\nmsg.mysql = global.get('mysql');\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 930,
+        "y": 2580,
+        "wires": [
+            [
+                "b6a65194.911d1"
+            ]
+        ]
+    },
+    {
+        "id": "f656aa2f.346548",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var entrenaID = msg.req.query.entrenaID\n\nglobal.set(\"entrenaID\", entrenaID); \n\nmsg.payload = \"SELECT * FROM entrena, entrenaejercicio where entrena.entrenaID=\" + entrenaID + \" AND entrenaejercicio.entrenaID=\" + entrenaID;\nmsg.topic = msg.payload; \nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 2580,
+        "wires": [
+            [
+                "49a84b14.aff064"
+            ]
+        ]
+    },
+    {
+        "id": "49a84b14.aff064",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 530,
+        "y": 2580,
+        "wires": [
+            [
+                "d8e8fd48.6587a",
+                "4ab4ce48.3e6ca"
+            ]
+        ]
+    },
+    {
+        "id": "b9971be4.29a418",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Estadísticas",
+        "info": "",
+        "x": 150,
+        "y": 2720,
+        "wires": []
+    },
+    {
+        "id": "70b807e1.25b528",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/estadisticas",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 2780,
+        "wires": [
+            [
+                "63612c94.a6c3c4"
+            ]
+        ]
+    },
+    {
+        "id": "dc27217d.d943f",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Registro de usuario</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n        <!-- Latest compiled and minified CSS -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n        \n        <!-- Optional theme -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n\n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n        \n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js\"></script>\n        <style>{{{payload.style}}}</style>\n    </head>\n    \n    <body>  \n\t\t<header>\n\t\t\t<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<div class=\"navbar-header\">\n\t\t\t\t\t  <a class=\"navbar-brand\" href=\"/home\">Cognitive Trainer</a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<ul class=\"nav navbar-nav\">\n\t\t\t\t\t  <li class=\"active\"><a href=\"/home\">Home</a></li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Usuarios\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/registro_usuario\">Registro</a></li>\n\t\t\t\t\t\t  <li><a href=\"/ver_usuario\">Ver</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Entrenamiento\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/comienzo_entrenamiento\">Comenzar</a></li>\n\t\t\t\t\t\t  <li><a href=\"/historial_entrenamiento\">Historial</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li><a href=\"/estadisticas\">Estadisticas</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t\t<ul class=\"nav navbar-nav navbar-right\">\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Registro</a></li>\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t</nav>\n        </header>\n        \n        <div class=\"container\">\n            <div class=\"jumbotron\">\n                <h2>Ver estadisticas de deportistas</h2>\n            </div>\n            \n            <p id=\"deportistas\"></p>\n        </div>\n        <div>\n            <span id=\"result\"></span>\n        </div>\n    \n    </body>\n</html>\n\n<script>\n    {{{payload.script}}}\n\t\n\tfunction completeAndRedirect(UsuarioID){\n        //alert('https://cognitivetrainerv2.mybluemix.net/editar_entrenamiento?entrenaID='+entrenaID);\n        location.href='https://cognitivetrainerv2.mybluemix.net/ver_estadistica_deportista?UsuarioID='+UsuarioID;\n    }\n    \n    var html = '<table class=\"table table-striped\"><div class=\"table responsive\">';\n\thtml +=\"<thead><tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>Ver estadísticas</th></tr></thead>\";\n    var arrayPayload = {{{payload}}};\n    \n\tif(arrayPayload.length > 0){\n        for (i = 0; i < arrayPayload.length; i++) {\n    \t\thtml += \"<tr>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].UsuarioID + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].pnom + \"</td>\";\n    \t\thtml += \"<td>\" + arrayPayload[i].pape + \"</td>\";\n    \t\thtml += \"<td><button  type='button' class='btn btn-info' onClick='completeAndRedirect(this.id);' id='\" + arrayPayload[i].UsuarioID + \"'>Ver</button></td>\";\n    \t\thtml += \"</tr>\";\n        }\n\t}\n\telse{\t\n\t\thtml += \"<tr><td colspan='7'>No hay usuarios ingresados<td></tr>\";\n\t}\n    html +=\"</div></table>\";\n    document.getElementById(\"deportistas\").innerHTML = html;\n</script>",
+        "x": 1070,
+        "y": 2780,
+        "wires": [
+            [
+                "4b3abb2.de28a44"
+            ]
+        ]
+    },
+    {
+        "id": "6f42013b.5e5df",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "JavaScript",
+        "field": "payload.script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "plain",
+        "template": "$(document).ready(function(e) {\n    \n    document.getElementById(\"deportistas\").innerHTML = msg.payload;\n\n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        var form_url = $(this).attr(\"action\");\n        var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: form_url, \n            type: form_method,      \n            data: form_data,     \n            cache: false,\n            success: function(returnhtml){                          \n                $(\"#result\").html(returnhtml); \n                $(\"#loadingimg\").hide();                    \n            }           \n        });    \n        \n    });\n    \n});\n\nfunction goHome() {\n  location.href = 'https://testingcognitivetrainer.mybluemix.net/home';\n}\n\nfunction registerUser() {\n  location.href = 'https://testingcognitivetrainer.mybluemix.net/registro_usuario';\n}\n\nfunction viewUser() {\n  location.href = 'https://testingcognitivetrainer.mybluemix.net/ver_usuario';\n}",
+        "x": 770,
+        "y": 2780,
+        "wires": [
+            [
+                "5be0fb6e.96cff4"
+            ]
+        ]
+    },
+    {
+        "id": "5be0fb6e.96cff4",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "CSS",
+        "field": "payload.style",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "input[type=text], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 8px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=submit] {\n    width: 100%;\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\ninput[type=submit]:hover {\n    background-color: #45a049;\n}\n\ndiv {\n    border-radius: 5px;\n    background-color: #f2f2f2;\n    padding: 20px;\n}",
+        "x": 930,
+        "y": 2780,
+        "wires": [
+            [
+                "dc27217d.d943f"
+            ]
+        ]
+    },
+    {
+        "id": "4b3abb2.de28a44",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1210,
+        "y": 2780,
+        "wires": []
+    },
+    {
+        "id": "63612c94.a6c3c4",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "msg.payload=\"SELECT usuarios.pnom, usuarios.pape, usuarios.UsuarioID FROM usuarios INNER JOIN deportista ON deportista.UsuarioID=usuarios.UsuarioID;\";\nmsg.topic = msg.payload; \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 330,
+        "y": 2780,
+        "wires": [
+            [
+                "fdf4f61d.dff238"
+            ]
+        ]
+    },
+    {
+        "id": "8ff46823.5e5fd8",
+        "type": "json",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 610,
+        "y": 2780,
+        "wires": [
+            [
+                "6f42013b.5e5df"
+            ]
+        ]
+    },
+    {
+        "id": "fdf4f61d.dff238",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 470,
+        "y": 2780,
+        "wires": [
+            [
+                "8ff46823.5e5fd8"
+            ]
+        ]
+    },
+    {
+        "id": "c7a86bc4.2d3f48",
+        "type": "http in",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "url": "/ver_estadistica_deportista",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 210,
+        "y": 2920,
+        "wires": [
+            [
+                "e7f18448.5cbcf8"
+            ]
+        ]
+    },
+    {
+        "id": "e7f18448.5cbcf8",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var UsuarioID = msg.req.query.UsuarioID\nmsg.payload = \"SELECT EntrID,TipoID,puntaje,fecha FROM entrena where UsuarioDeportistaID=\"+UsuarioID;\nmsg.topic = msg.payload; \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 430,
+        "y": 2920,
+        "wires": [
+            [
+                "bd3c46c0.dd1c18"
+            ]
+        ]
+    },
+    {
+        "id": "bd3c46c0.dd1c18",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 570,
+        "y": 2920,
+        "wires": [
+            [
+                "2b4e796b.cbf566"
+            ]
+        ]
+    },
+    {
+        "id": "2b4e796b.cbf566",
+        "type": "json",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 710,
+        "y": 2920,
+        "wires": [
+            [
+                "12725f39.51bc61"
+            ]
+        ]
+    },
+    {
+        "id": "28d6a78d.8ae518",
+        "type": "comment",
+        "z": "de6d9106.9ce4e",
+        "name": "Estadísticas de deportista",
+        "info": "",
+        "x": 190,
+        "y": 2860,
+        "wires": []
+    },
+    {
+        "id": "7df584d4.121d7c",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "HTML",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<html>\n    <head>\n        <title>Cognitive Trainer - Editar entrenamiento</title>\n        <meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\">\n        <meta charset=\"utf-8\">\n        \n        <style>{{{style}}}</style>\n        \n        <!-- Latest compiled and minified CSS -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n        \n        <!-- Optional theme -->\n        <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\" integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n\n        <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>\n        <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n        \n        <!--script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js\"></script-->\n        \n        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js\"></script>\n        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js\"></script>\n        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js\"></script>\n        <script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js\"></script>\n        \n        <!-- Javascript -->\n        <script type=\"text/javascript\">\n            {{{script}}}\n        </script>\n    </head>\n    \n    <body onload=\"wsConnect();\" onunload=\"ws.disconnect();\">  \n\t\t<header>\n\t\t\t<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<div class=\"navbar-header\">\n\t\t\t\t\t  <a class=\"navbar-brand\" href=\"/home\">Cognitive Trainer</a>\n\t\t\t\t\t</div>\n\t\t\t\t\t<ul class=\"nav navbar-nav\">\n\t\t\t\t\t  <li class=\"active\"><a href=\"/home\">Home</a></li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Usuarios\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/registro_usuario\">Registro</a></li>\n\t\t\t\t\t\t  <li><a href=\"/ver_usuario\">Ver</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li class=\"dropdown\">\n\t\t\t\t\t\t<a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">Entrenamiento\n\t\t\t\t\t\t<span class=\"caret\"></span></a>\n\t\t\t\t\t\t<ul class=\"dropdown-menu\">\n\t\t\t\t\t\t  <li><a href=\"/comienzo_entrenamiento\">Comenzar</a></li>\n\t\t\t\t\t\t  <li><a href=\"/historial_entrenamiento\">Historial</a></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t  </li>\n\t\t\t\t\t  <li><a href=\"/estadisticas\">Estadisticas</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t\t<ul class=\"nav navbar-nav navbar-right\">\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Registro</a></li>\n\t\t\t\t\t  <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n\t\t\t\t\t</ul>\n\t\t\t\t</div>\n\t\t\t</nav>\n        </header>\n        \n        <div class=\"container\">\n            <div class=\"jumbotron\">\n                <h2>Estadísticas</h2>\n            </div>\n            \n            <div id=\"formulario\" class=\"row\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t<canvas id=\"hitSimpleChart\"></canvas>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t<canvas id=\"hitSimonChart\"></canvas>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t<canvas id=\"cruceSimpleChart\"></canvas>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"col-sm-6\">\n\t\t\t\t\t\t<canvas id=\"cruceSimonChart\"></canvas>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n        </div>\n    </body>\n</html>\n\n<script>\n    \n\t{{{payload.script}}}\t\n    var arrayPayload = {{{payload}}};\n\t\n\tif(arrayPayload.length > 0){\n\t\t//Fecha y puntaje para Hit\n\t\tvar puntajeHitSimpleArray = [];\n\t\tvar fechaHitSimpleArray = [];\n\t\tvar puntajeHitSimonArray = [];\n\t\tvar fechaHitSimonArray = [];\n\t\t//Fecha y puntaje para cruce\n\t\tvar puntajeCruceSimpleArray = [];\n\t\tvar fechaCruceSimpleArray = [];\n\t\tvar puntajeCruceSimonArray = [];\n\t\tvar fechaCruceSimonArray = [];\n\t\t\n\t\tfor (var i = 0; i < arrayPayload.length; i++) { \n\t\t\tfechaBase = arrayPayload[i].fecha;\n\t\t\tvar date = new Date(fechaBase);\n\t\t\tvar dd = date.getDate();\n\t\t\tvar mm = date.getMonth();\n\t\t\tvar yy = date.getFullYear();\n\t\t\tmm += 1;\n\t\t\tfecha = dd + \"/\" + mm + \"/\" + yy;   \n\t\t\t\t\t\n\t\t\tif(arrayPayload[i].EntrID===1){\t//Hit and score\n\t\t\t\tif(arrayPayload[i].TipoID===1){\t//Simple\t\t\t\n\t\t\t\t\tfechaHitSimpleArray[i] = fecha;\n\t\t\t\t\tpuntajeHitSimpleArray[i] = arrayPayload[i].puntaje;\n\t\t\t\t}else{\t//Simon\n\t\t\t\t\tfechaHitSimonArray[i] = fecha;\n\t\t\t\t\tpuntajeHitSimonArray[i] = arrayPayload[i].puntaje;\n\t\t\t\t}\n\t\t\t} else{\t\t//Cruce balon\n\t\t\t\tif(arrayPayload[i].TipoID===1){\t//Simple\n\t\t\t\t\tconsole.log(fechaBase);\n\t\t\t\t\tconsole.log(date);\n\t\t\t\t\tconsole.log(mm);\n\t\t\t\t\tfechaCruceSimpleArray[i] = fecha;\n\t\t\t\t\tpuntajeCruceSimpleArray[i] = arrayPayload[i].puntaje;\n\t\t\t\t}else{\t//Simon\n\t\t\t\t\tfechaCruceSimonArray[i] = fecha;\n\t\t\t\t\tpuntajeCruceSimonArray[i] = arrayPayload[i].puntaje;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\t\n\t\t//Charts\n\t\tvar ctxL1 = document.getElementById(\"cruceSimpleChart\").getContext('2d');\n\t\tvar myLineChart = new Chart(ctxL1, {\n\t\t\ttype: 'line',\n\t\t\tdata: {\n\t\t\t\tlabels: fechaCruceSimpleArray,\n\t\t\t\tdatasets: [\n\t\t\t\t\t{\n\t\t\t\t\t\tlabel: \"Estadisticas de Cruce de balon - Modalidad Simple\",\n\t\t\t\t\t\tfillColor: \"#FFF\",\n\t\t\t\t\t\tborderColor: \"rgba(30,30,220,0.6)\",\n\t\t\t\t\t\tstrokeColor: \"rgba(30,220,30,0.4)\",\n\t\t\t\t\t\tbackgroundColor: \"rgba(220,30,30,0.4)\",\n\t\t\t\t\t\tpointColor: \"#dc1e1e\",\n\t\t\t\t\t\tpointStrokeColor: \"#dc1e1e\",\n\t\t\t\t\t\tpointHighlightFill: \"#dc1e1e\",\n\t\t\t\t\t\tpointHighlightStroke: \"rgba(220,30,30,1)\",\n\t\t\t\t\t\tpointBackgroundColor: \"#dc1e1e\",\n\t\t\t\t\t\tdata: puntajeCruceSimpleArray\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\toptions: {\n\t\t\t\tresponsive: true,\n\t\t\t\tshowLines: true\n\t\t\t}\n\t\t});\n\t\t\n\t\t//Charts\n\t\tvar ctxL2 = document.getElementById(\"cruceSimonChart\").getContext('2d');\n\t\tvar myLineChart2 = new Chart(ctxL2, {\n\t\t\ttype: 'line',\n\t\t\tdata: {\n\t\t\t\tlabels: fechaCruceSimonArray,\n\t\t\t\tdatasets: [\n\t\t\t\t\t{\n\t\t\t\t\t\tlabel: \"Estadisticas de Cruce de balon - Modalidad Simon\",\n\t\t\t\t\t\tfillColor: \"#FFF\",\n\t\t\t\t\t\tborderColor: \"rgba(30,30,220,0.6)\",\n\t\t\t\t\t\tstrokeColor: \"rgba(30,220,30,0.4)\",\n\t\t\t\t\t\tbackgroundColor: \"rgba(220,30,30,0.4)\",\n\t\t\t\t\t\tpointColor: \"#dc1e1e\",\n\t\t\t\t\t\tpointStrokeColor: \"#dc1e1e\",\n\t\t\t\t\t\tpointHighlightFill: \"#dc1e1e\",\n\t\t\t\t\t\tpointHighlightStroke: \"rgba(220,30,30,1)\",\n\t\t\t\t\t\tpointBackgroundColor: \"#dc1e1e\",\n\t\t\t\t\t\tdata: puntajeCruceSimonArray\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\toptions: {\n\t\t\t\tresponsive: true,\n\t\t\t\tshowLines: true\n\t\t\t}\n\t\t});\n\t\t\n\t\t//Charts\n\t\tvar ctxL3 = document.getElementById(\"hitSimpleChart\").getContext('2d');\n\t\tvar myLineChart3 = new Chart(ctxL3, {\n\t\t\ttype: 'line',\n\t\t\tdata: {\n\t\t\t\tlabels: fechaHitSimpleArray,\n\t\t\t\tdatasets: [\n\t\t\t\t\t{\n\t\t\t\t\t\tlabel: \"Estadisticas de Hit and Score - Modalidad Simple\",\n\t\t\t\t\t\tfillColor: \"#FFF\",\n\t\t\t\t\t\tborderColor: \"rgba(30,30,220,0.6)\",\n\t\t\t\t\t\tstrokeColor: \"rgba(30,220,30,0.4)\",\n\t\t\t\t\t\tbackgroundColor: \"rgba(220,30,30,0.4)\",\n\t\t\t\t\t\tpointColor: \"#dc1e1e\",\n\t\t\t\t\t\tpointStrokeColor: \"#dc1e1e\",\n\t\t\t\t\t\tpointHighlightFill: \"#dc1e1e\",\n\t\t\t\t\t\tpointHighlightStroke: \"rgba(220,30,30,1)\",\n\t\t\t\t\t\tpointBackgroundColor: \"#dc1e1e\",\n\t\t\t\t\t\tdata: puntajeHitSimpleArray\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\toptions: {\n\t\t\t\tresponsive: true,\n\t\t\t\tshowLines: true\n\t\t\t}\n\t\t});\n\t\t\n\t\t//Charts\n\t\tvar ctxL4 = document.getElementById(\"hitSimonChart\").getContext('2d');\n\t\tvar myLineChart4 = new Chart(ctxL4, {\n\t\t\ttype: 'line',\n\t\t\tdata: {\n\t\t\t\tlabels: fechaHitSimonArray,\n\t\t\t\tdatasets: [\n\t\t\t\t\t{\n\t\t\t\t\t\tlabel: \"Estadisticas de Hit and Score - Modalidad Simon\",\n\t\t\t\t\t\tfillColor: \"#FFF\",\n\t\t\t\t\t\tborderColor: \"rgba(30,30,220,0.6)\",\n\t\t\t\t\t\tstrokeColor: \"rgba(30,220,30,0.4)\",\n\t\t\t\t\t\tbackgroundColor: \"rgba(220,30,30,0.4)\",\n\t\t\t\t\t\tpointColor: \"#dc1e1e\",\n\t\t\t\t\t\tpointStrokeColor: \"#dc1e1e\",\n\t\t\t\t\t\tpointHighlightFill: \"#dc1e1e\",\n\t\t\t\t\t\tpointHighlightStroke: \"rgba(220,30,30,1)\",\n\t\t\t\t\t\tpointBackgroundColor: \"#dc1e1e\",\n\t\t\t\t\t\tdata: puntajeHitSimonArray\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\toptions: {\n\t\t\t\tresponsive: true,\n\t\t\t\tshowLines: true\n\t\t\t}\n\t\t});\n\t}\n\t\n</script>\n",
+        "x": 750,
+        "y": 3000,
+        "wires": [
+            [
+                "9a54af8c.51a2e"
+            ]
+        ]
+    },
+    {
+        "id": "12725f39.51bc61",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "JavaScript",
+        "field": "script",
+        "fieldType": "msg",
+        "format": "javascript",
+        "syntax": "plain",
+        "template": "$(document).ready(function(e) {\n\n    $(\"form[ajax=true]\").submit(function(e) {\n        \n        e.preventDefault();\n        \n        var form_data = $(this).serialize();\n        var form_url = $(this).attr(\"action\");\n        var form_method = $(this).attr(\"method\").toUpperCase();\n        \n        $(\"#loadingimg\").show();\n        \n        $.ajax({\n            url: form_url, \n            type: form_method,      \n            data: form_data,     \n            cache: false,\n            success: function(returnhtml){                          \n                $(\"#result\").html(returnhtml); \n                $(\"#loadingimg\").hide();                    \n            }           \n        });    \n        \n    });\n    \n    $('#leyendoRFID').hide(0);\n    $('#backgroundRFID').hide(0);\n    \n    \n});",
+        "x": 450,
+        "y": 3000,
+        "wires": [
+            [
+                "65649d9c.b60aa4"
+            ]
+        ]
+    },
+    {
+        "id": "65649d9c.b60aa4",
+        "type": "template",
+        "z": "de6d9106.9ce4e",
+        "name": "CSS",
+        "field": "style",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "label {\n    margin-bottom: 15px !important;\n}\n\ninput[type=text], select {\n    width: 100%;\n    padding: 12px 20px;\n    margin: 10px 0;\n    display: inline-block;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    box-sizing: border-box;\n}\n\ninput[type=submit] {\n    width: 100%;\n    background-color: #4CAF50;\n    color: white;\n    padding: 14px 20px;\n    margin: 8px 0;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n}\n\ninput[type=submit]:hover {\n    background-color: #45a049;\n}\n\n#formulario {\n    margin: 0 5%;\n    border-radius: 5px;\n    background-color: #f2f2f2;\n    padding: 20px;\n    width: 90%;\n}\n\n#leyendoRFID {\n    top: 50%;\n    left: 50%;\n    width:30em;\n    height:18em;\n    margin-top: -9em; /*set to a negative number 1/2 of your height*/\n    margin-left: -15em; /*set to a negative number 1/2 of your width*/\n    border: 1px solid #ccc;\n    background-color: #f3f3f3;\n    position:fixed;\n}\n\n#backgroundRFID{\n    background-color: rgba(17, 17, 17, 0.65);\n    position: fixed;\n    z-index: 9001;\n    top: 0px;\n    left: 0px;\n    width: 100%;\n    height: 100%;\n}",
+        "x": 610,
+        "y": 3000,
+        "wires": [
+            [
+                "7df584d4.121d7c"
+            ]
+        ]
+    },
+    {
+        "id": "9a54af8c.51a2e",
+        "type": "http response",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 890,
+        "y": 3000,
+        "wires": []
+    },
+    {
+        "id": "72dcd2ab.d88cfc",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var toggleHit = global.get(\"toggleHit\");\nvar tipoHit = global.get(\"tipoHit\"); \nvar repHit = global.get(\"repHit\"); \nvar toggleCruce = global.get(\"toggleCruce\");\nvar tipoCruce = global.get(\"tipoCruce\"); \nvar repCruce = global.get(\"repCruce\"); \nvar serie = global.get(\"serie\"); \n\nvar d = new Date();\n\nvar sql =\"\";\n\nif(toggleHit===\"1\"){\n    sql = \"insert into entrenaejercicio (EntrenaID, EntrID, TipoID, repeticion, serie) values (\"+msg.payload[1][0].entrenaID+\", 1, \"+tipoHit+\",\"+repHit+\",\"+serie+\");\";    \n}\nif(toggleCruce===\"1\"){\n    sql = sql+\"insert into entrenaejercicio (EntrenaID, EntrID, TipoID, repeticion, serie) values (\"+msg.payload[1][0].entrenaID+\", 2, \"+tipoCruce+\",\"+repCruce+\",\"+serie+\");\";    \n}\n\n\nmsg.payload = sql;\n\nmsg.topic=msg.payload;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1510,
+        "y": 1740,
+        "wires": [
+            [
+                "c36776d3.7a1808"
+            ]
+        ]
+    },
+    {
+        "id": "c36776d3.7a1808",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 1650,
+        "y": 1740,
+        "wires": [
+            [
+                "f530d289.36e82"
+            ]
+        ]
+    },
+    {
+        "id": "9f8103ab.089f8",
+        "type": "ibmiot out",
+        "z": "de6d9106.9ce4e",
+        "authentication": "boundService",
+        "apiKey": "",
+        "outputType": "cmd",
+        "deviceId": "Master",
+        "deviceType": "NodeMCU",
+        "eventCommandType": "rfid",
+        "format": "json",
+        "data": "rfid",
+        "qos": "",
+        "name": "Send to IBM IoT Platform",
+        "service": "registered",
+        "x": 1790,
+        "y": 1800,
+        "wires": []
+    },
+    {
+        "id": "f9376f0a.c3d8c",
+        "type": "switch",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 1070,
+        "y": 1700,
+        "wires": [
+            [
+                "bf1f671b.5d82a8"
+            ],
+            [
+                "f795c0b7.2f6ac"
+            ]
+        ]
+    },
+    {
+        "id": "996e08d5.12c388",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var toggleHit = global.get(\"toggleHit\");\nvar toggleCruce = global.get(\"toggleCruce\");\n\nvar retorno = toggleHit + toggleCruce;\n\nretorno=parseInt(retorno);\n\nmsg.payload = retorno;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 930,
+        "y": 1700,
+        "wires": [
+            [
+                "f9376f0a.c3d8c"
+            ]
+        ]
+    },
+    {
+        "id": "f795c0b7.2f6ac",
+        "type": "change",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "No existe entrenamiento",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1240,
+        "y": 1680,
+        "wires": [
+            [
+                "ddacf4c5.a40ba8"
+            ]
+        ]
+    },
+    {
+        "id": "9dbf42f9.d822e",
+        "type": "switch",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload.retorno",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gt",
+                "v": "0",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 470,
+        "y": 2180,
+        "wires": [
+            [
+                "96a5bb4b.a3c258"
+            ],
+            [
+                "81b6815.17a198"
+            ]
+        ]
+    },
+    {
+        "id": "d65ca2d1.4cd1b",
+        "type": "mysql",
+        "z": "de6d9106.9ce4e",
+        "mydb": "df7658c1.dade68",
+        "name": "Test",
+        "x": 790,
+        "y": 2220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "81b6815.17a198",
+        "type": "function",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "func": "var sql = \"update entrenaejercicio set error = \" + msg.payload.error +\", tiempo = \" + msg.payload.tiempo +\" where entrenaID=\" + msg.payload.EntrenaID +\"\";\n\nmsg.payload = sql;\n\nmsg.topic = msg.payload;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 650,
+        "y": 2220,
+        "wires": [
+            [
+                "d65ca2d1.4cd1b"
+            ]
+        ]
+    },
+    {
+        "id": "d8e8fd48.6587a",
+        "type": "json",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 670,
+        "y": 2580,
+        "wires": [
+            [
+                "79ae7d9f.d29d74"
+            ]
+        ]
+    },
+    {
+        "id": "4ab4ce48.3e6ca",
+        "type": "debug",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 580,
+        "y": 2540,
+        "wires": []
+    },
+    {
+        "id": "b0697465.865398",
+        "type": "debug",
+        "z": "de6d9106.9ce4e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 410,
+        "y": 2080,
+        "wires": []
+    },
+    {
+        "id": "ae47ea4e.d73658",
+        "type": "websocket-listener",
+        "z": "",
+        "path": "/ws/simple",
+        "wholemsg": "false"
+    },
+    {
+        "id": "df7658c1.dade68",
+        "type": "MySQLdatabase",
+        "z": "",
+        "host": "us-cdbr-sl-dfw-01.cleardb.net",
+        "port": "3306",
+        "db": "ibmx_39120dbf421eeba",
+        "tz": ""
+    }
+]
