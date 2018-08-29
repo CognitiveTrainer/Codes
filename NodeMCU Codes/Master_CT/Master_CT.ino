@@ -54,8 +54,8 @@
   long lastPublishMillis;
 
 //=========  NODEMCU CONNECTION TO IBM =======
-  const char* ssid = "HUAWEI-IoT";
-  const char* password = "ORTWiFiIoT";
+  const char* ssid = "Fedeb";
+  const char* password = "maife3220";
   
   #define ORG "0nfqy4"
   #define DEVICE_TYPE "NodeMCU"
@@ -740,3 +740,4 @@
 
     publishCruceTiempoError(EntrenaID, error, tiempo);
   }
+

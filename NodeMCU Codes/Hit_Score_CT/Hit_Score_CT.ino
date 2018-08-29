@@ -17,8 +17,8 @@
 
   FC16 display = FC16(csPin, displayCount);
 
-  const char* ssid = "HUAWEI-IoT";
-  const char* password = "ORTWiFiIoT";
+  const char* ssid = "Fedeb";
+  const char* password = "maife3220";
 
 // Static pins NodeMCU
 //    static const uint8_t D0   = 16;
@@ -58,7 +58,7 @@
    Se va a conectar al servidor Wifi con la IP 192.168.1.80
 */
   int             CognServerPort  = 8080;
-  IPAddress       CognServer(192, 168, 1, 102);
+  IPAddress       CognServer(192, 168, 43, 209);
   WiFiClient      CognClient;
   
   void setup() { 
