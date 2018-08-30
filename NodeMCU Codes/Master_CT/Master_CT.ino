@@ -57,10 +57,10 @@
   const char* ssid = "Fedeb";
   const char* password = "maife3220";
   
-  #define ORG "0nfqy4"
+  #define ORG "yruppa"
   #define DEVICE_TYPE "NodeMCU"
   #define DEVICE_ID "Master"
-  #define TOKEN "8feJ33h_!e@!zSEkL+"
+  #define TOKEN "gipBNjoCn*zVdNcGat"
 
 //========= IBM IoT PLATFORM CONNECTION ======
 
