@@ -54,8 +54,8 @@
   long lastPublishMillis;
 
 //=========  NODEMCU CONNECTION TO IBM =======
-  const char* ssid = "Fedeb";
-  const char* password = "maife3220";
+  const char* ssid = "HUAWEI-IoT";
+  const char* password = "ORTWiFiIoT";
   
   #define ORG "yruppa"
   #define DEVICE_TYPE "NodeMCU"
